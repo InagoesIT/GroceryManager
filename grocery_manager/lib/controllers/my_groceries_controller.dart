@@ -7,7 +7,7 @@ class MyGroceriesController extends GetxController {
 
   @override
   void onInit() {
-    List? storedGroceries = GetStorage().read<List>('groceries');
+    List? storedGroceries = GetStorage().read<List>('my_groceries');
 
     if (storedGroceries != null) {
       groceries = storedGroceries

@@ -64,7 +64,8 @@ class MyGrocery extends StatelessWidget {
                               if (index == null) {
                                 myGroceriesController.groceries.add(Grocery(
                                     title: textEditingController.text,
-                                    category: "Ceva"));
+                                    category: "Ceva",
+                                    isBought: false));
                               } else {
                                 var updatenote =
                                     myGroceriesController.groceries[index!];
