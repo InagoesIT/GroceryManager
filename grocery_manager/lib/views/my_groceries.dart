@@ -41,8 +41,8 @@ class MyGroceries extends StatelessWidget {
   GestureDetector getGrocery(List<Grocery> groceries, int index) {
     return GestureDetector(
       onTap: () => Get.to(MyGrocery(index: index)),
-      onLongPress: () => getGroceryDeleteDialog(groceries, index),
-      child: Obx(() => getGroceryCard(groceries, index)),
+      onDoubleTap: () => getGroceryDeleteDialog(groceries, index),
+      child: Obx(() => getGroceryItem(groceries, index)),
     );
   }
 
@@ -60,22 +60,15 @@ class MyGroceries extends StatelessWidget {
         });
   }
 
-  Obx getGroceryCard(List<Grocery> groceries, int index) {
+  Obx getGroceryItem(List<Grocery> groceries, int index) {
     var grocery = groceries[index];
 
-    return Obx(() => CheckboxListTile(
+    return Obx(() => Card(
+            child: ListTile(
           title: getGroceryName(grocery),
           subtitle: getGroceryCategory(grocery),
-          value: grocery.isBought.value,
-          onChanged: (bool? isEnabled) {
-            grocery.isBought.value = isEnabled! ? true : false;
-            if (grocery.isBought.value) {
-              groceries.removeAt(index);
-              groceries.add(grocery);
-            }
-          },
-          controlAffinity: ListTileControlAffinity.leading,
-        ));
+          leading: getGroceryCheckbox(groceries, index),
+        )));
   }
 
   Text getGroceryName(Grocery grocery) {
@@ -95,5 +88,20 @@ class MyGroceries extends StatelessWidget {
     return grocery.isBought.value
         ? TextDecoration.lineThrough
         : TextDecoration.none;
+  }
+
+  Obx getGroceryCheckbox(List<Grocery> groceries, int index) {
+    var grocery = groceries[index];
+
+    return Obx(() => Checkbox(
+          value: grocery.isBought.value,
+          onChanged: (isEnabled) {
+            grocery.isBought.value = !grocery.isBought.value;
+            if (grocery.isBought.value) {
+              groceries.removeAt(index);
+              groceries.add(grocery);
+            }
+          },
+        ));
   }
 }
