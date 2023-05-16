@@ -1,111 +1,28 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:grocery_manager/views/base_views/my_products.dart';
 import '../controllers/my_groceries_controller.dart';
-import '../models/grocery.dart';
+import '../controllers/product_categories_controller.dart';
 import 'my_grocery.dart';
 
-class MyGroceries extends StatelessWidget {
-  final MyGroceriesController myGroceriesController =
-      Get.put(MyGroceriesController());
+class MyGroceries extends MyProducts {
+  @override
+  final dynamic myProductsController = Get.put(MyGroceriesController());
+  @override
+  final String? pageTitle = "My Groceries";
+  @override
+  final bool? isGrocery = true;
+  final dynamic productCategoriesController =
+      Get.find<ProductsCategoryController>();
 
   MyGroceries({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              centerTitle: true,
-              title: const Text('My Groceries'),
-            ),
-            floatingActionButton: FloatingActionButton(
-              child: const Icon(Icons.add),
-              onPressed: () => Get.to(MyGrocery()),
-            ),
-            body: Padding(
-                padding: const EdgeInsets.all(5), child: getMyGroceries())));
+  void getToMyProduct(int index) {
+    Get.to(MyGrocery(index: index));
   }
 
-  Widget getMyGroceries() {
-    List<Grocery> groceries = myGroceriesController.groceries;
-
-    return Obx(
-      () => ListView.builder(
-          itemCount: myGroceriesController.groceries.length,
-          itemBuilder: (context, index) => getGrocery(groceries, index)),
-    );
-  }
-
-  GestureDetector getGrocery(List<Grocery> groceries, int index) {
-    return GestureDetector(
-      onTap: () => Get.to(MyGrocery(index: index)),
-      onDoubleTap: () => getGroceryDeleteDialog(groceries, index),
-      child: Obx(() => getGroceryItem(groceries[index])),
-    );
-  }
-
-  Future<dynamic> getGroceryDeleteDialog(List<Grocery> groceries, int index) {
-    return Get.defaultDialog(
-        title: 'Delete Grocery',
-        middleText: groceries[index].name.value,
-        onCancel: () => Get.back(),
-        buttonColor: Colors.redAccent,
-        confirmTextColor: Colors.white,
-        cancelTextColor: Colors.black,
-        onConfirm: () {
-          groceries.removeAt(index);
-          Get.back();
-        });
-  }
-
-  Obx getGroceryItem(Grocery grocery) {
-    return Obx(() => Card(
-            child: ListTile(
-          title: getGroceryName(grocery),
-          subtitle: getGroceryCategory(grocery),
-          leading: getGroceryCheckbox(grocery),
-          trailing: getGroceryQuantity(grocery),
-        )));
-  }
-
-  Text getGroceryName(Grocery grocery) {
-    return Text(grocery.name.value,
-        style: TextStyle(decoration: getTextDecoration(grocery)));
-  }
-
-  Text getGroceryCategory(Grocery grocery) {
-    return Text(grocery.category.value,
-        style: TextStyle(
-            color: Colors.grey,
-            fontSize: 13,
-            decoration: getTextDecoration(grocery)));
-  }
-
-  TextDecoration getTextDecoration(Grocery grocery) {
-    return grocery.isBought.value
-        ? TextDecoration.lineThrough
-        : TextDecoration.none;
-  }
-
-  Obx getGroceryCheckbox(Grocery grocery) {
-    return Obx(() => Checkbox(
-          value: grocery.isBought.value,
-          onChanged: (isEnabled) {
-            grocery.isBought.value = !grocery.isBought.value;
-            // if (grocery.isBought.value) {
-            //   groceries.removeAt(index);
-            //   groceries.add(grocery);
-            // }
-          },
-        ));
-  }
-
-  Text getGroceryQuantity(Grocery grocery) {
-    return Text(grocery.quantity.value.toString(),
-        style: TextStyle(
-            color: Colors.grey,
-            fontSize: 13,
-            decoration: getTextDecoration(grocery)));
+  @override
+  void getToNewMyProduct() {
+    Get.to(MyGrocery());
   }
 }

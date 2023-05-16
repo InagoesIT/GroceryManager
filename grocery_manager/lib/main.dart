@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_manager/views/my_groceries.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:grocery_manager/views/my_pantry.dart';
 
 void main() async {
   await GetStorage.init();
@@ -14,12 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Grocery Manager',
       theme: ThemeData(
         primarySwatch: Colors.teal,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyGroceries(),
+      home: MyPantry(),
     );
   }
 }
