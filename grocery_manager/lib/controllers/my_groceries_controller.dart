@@ -4,7 +4,7 @@ import '../models/grocery.dart';
 
 class MyGroceriesController extends GetxController {
   var groceries = <Grocery>[].obs;
-  RxSet groceryCategories = <String>{}.obs;
+  RxList groceryCategories = <String>[].obs;
 
   @override
   void onInit() {
@@ -19,19 +19,13 @@ class MyGroceriesController extends GetxController {
           .obs;
     }
     if (storedGroceryCategories != null) {
-      groceryCategories = storedGroceryCategories.toSet().obs;
+      groceryCategories = storedGroceryCategories.toList().obs;
     }
     ever(groceries, (_) {
       GetStorage().write('my_groceries', groceries.toList());
-      GetStorage().write('grocery_categories', groceryCategories.toSet());
+      GetStorage().write('grocery_categories', groceryCategories.toList());
     });
     super.onInit();
-  }
-
-  void loadGroceryCategories() {
-    for (Grocery grocery in groceries) {
-      groceryCategories.add(grocery.category.value);
-    }
   }
 
   void addGrocery(Grocery grocery) {
@@ -39,6 +33,8 @@ class MyGroceriesController extends GetxController {
   }
 
   void addGroceryCategory(String category) {
-    groceryCategories.add(category);
+    if (!groceryCategories.contains(category)) {
+      groceryCategories.add(category);
+    }
   }
 }

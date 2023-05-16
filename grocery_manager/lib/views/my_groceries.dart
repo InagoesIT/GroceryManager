@@ -5,13 +5,13 @@ import '../models/grocery.dart';
 import 'my_grocery.dart';
 
 class MyGroceries extends StatelessWidget {
-  const MyGroceries({super.key});
+  final MyGroceriesController myGroceriesController =
+      Get.put(MyGroceriesController());
+
+  MyGroceries({super.key});
 
   @override
   Widget build(BuildContext context) {
-    MyGroceriesController myGroceriesController =
-        Get.put(MyGroceriesController());
-
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
@@ -21,14 +21,13 @@ class MyGroceries extends StatelessWidget {
             ),
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
-              onPressed: () => Get.to(const MyGrocery()),
+              onPressed: () => Get.to(MyGrocery()),
             ),
             body: Padding(
-                padding: const EdgeInsets.all(5),
-                child: getMyGroceries(myGroceriesController))));
+                padding: const EdgeInsets.all(5), child: getMyGroceries())));
   }
 
-  Widget getMyGroceries(MyGroceriesController myGroceriesController) {
+  Widget getMyGroceries() {
     List<Grocery> groceries = myGroceriesController.groceries;
 
     return Obx(
@@ -42,14 +41,14 @@ class MyGroceries extends StatelessWidget {
     return GestureDetector(
       onTap: () => Get.to(MyGrocery(index: index)),
       onDoubleTap: () => getGroceryDeleteDialog(groceries, index),
-      child: Obx(() => getGroceryItem(groceries, index)),
+      child: Obx(() => getGroceryItem(groceries[index])),
     );
   }
 
   Future<dynamic> getGroceryDeleteDialog(List<Grocery> groceries, int index) {
     return Get.defaultDialog(
         title: 'Delete Grocery',
-        middleText: groceries[index].title.value,
+        middleText: groceries[index].name.value,
         onCancel: () => Get.back(),
         buttonColor: Colors.redAccent,
         confirmTextColor: Colors.white,
@@ -60,19 +59,18 @@ class MyGroceries extends StatelessWidget {
         });
   }
 
-  Obx getGroceryItem(List<Grocery> groceries, int index) {
-    var grocery = groceries[index];
-
+  Obx getGroceryItem(Grocery grocery) {
     return Obx(() => Card(
             child: ListTile(
           title: getGroceryName(grocery),
           subtitle: getGroceryCategory(grocery),
-          leading: getGroceryCheckbox(groceries, index),
+          leading: getGroceryCheckbox(grocery),
+          trailing: getGroceryQuantity(grocery),
         )));
   }
 
   Text getGroceryName(Grocery grocery) {
-    return Text(grocery.title.value,
+    return Text(grocery.name.value,
         style: TextStyle(decoration: getTextDecoration(grocery)));
   }
 
@@ -90,18 +88,24 @@ class MyGroceries extends StatelessWidget {
         : TextDecoration.none;
   }
 
-  Obx getGroceryCheckbox(List<Grocery> groceries, int index) {
-    var grocery = groceries[index];
-
+  Obx getGroceryCheckbox(Grocery grocery) {
     return Obx(() => Checkbox(
           value: grocery.isBought.value,
           onChanged: (isEnabled) {
             grocery.isBought.value = !grocery.isBought.value;
-            if (grocery.isBought.value) {
-              groceries.removeAt(index);
-              groceries.add(grocery);
-            }
+            // if (grocery.isBought.value) {
+            //   groceries.removeAt(index);
+            //   groceries.add(grocery);
+            // }
           },
         ));
+  }
+
+  Text getGroceryQuantity(Grocery grocery) {
+    return Text(grocery.quantity.value.toString(),
+        style: TextStyle(
+            color: Colors.grey,
+            fontSize: 13,
+            decoration: getTextDecoration(grocery)));
   }
 }

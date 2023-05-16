@@ -1,33 +1,37 @@
 import 'package:get/get.dart';
-import 'package:grocery_manager/views/my_groceries.dart';
 
 class Grocery extends GetxController {
-  var title = "".obs;
+  var name = "".obs;
   var category = "".obs;
   var isBought = false.obs;
+  var quantity = 1.obs;
 
   Grocery({
-    required String title,
-    required String category,
+    String name = "",
+    String category = "",
     bool isBought = false,
+    int quantity = 1,
   }) {
-    this.title.value = title;
+    this.name.value = name;
     this.category.value = category;
     this.isBought.value = isBought;
+    this.quantity.value = quantity;
   }
 
   factory Grocery.fromJson(Map<String, dynamic> json) {
     return Grocery(
-        title: json['title'],
+        name: json['name'],
         category: json['category'],
-        isBought: json['isBought']);
+        isBought: json['isBought'],
+        quantity: json['quantity']);
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'title': title.value,
+      'name': name.value,
       'category': category.value,
-      'isBought': isBought.value
+      'isBought': isBought.value,
+      'quantity': quantity.value
     };
   }
 }
