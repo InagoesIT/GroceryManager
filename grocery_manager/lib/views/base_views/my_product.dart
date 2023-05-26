@@ -25,11 +25,12 @@ abstract class MyProduct extends StatelessWidget {
   Widget getBody(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15),
-      child: Column(
+      child: SingleChildScrollView(
+          child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: getProductElements(context) + getProductButtons(),
-      ),
+      )),
     );
   }
 

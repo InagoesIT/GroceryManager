@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 import 'package:grocery_manager/views/my_groceries.dart';
 import 'package:grocery_manager/views/my_pantry.dart';
 
+import '../../controllers/navigation_controller.dart';
+
 abstract class MyProducts extends StatelessWidget {
   final dynamic myProductsController = null;
   final String? pageTitle = null;
   final bool? isGrocery = null;
+  final NavigationController? navigationController = null;
 
   const MyProducts({super.key});
 
@@ -18,25 +21,54 @@ abstract class MyProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            bottomNavigationBar: getNavigationBar(),
             backgroundColor: Colors.white,
             appBar: AppBar(
-              centerTitle: true,
-              title: Text(pageTitle!),
-              actions: [
-                IconButton(
-                    onPressed: () =>
-                        isGrocery! ? Get.to(MyPantry()) : Get.to(MyGroceries()),
-                    icon: isGrocery!
-                        ? const Icon(Icons.kitchen_rounded)
-                        : const Icon(Icons.shopping_cart_outlined))
-              ],
-            ),
+                centerTitle: true,
+                title: Text(pageTitle!),
+                actions: [getMenu()]),
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
               onPressed: () => getToNewMyProduct(),
             ),
             body: Padding(
                 padding: const EdgeInsets.all(5), child: getMyProducts())));
+  }
+
+  List<PopupMenuEntry<int>> getMenuItems(context) {
+    return [
+      PopupMenuItem<int>(
+          value: 1,
+          child: ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("opt 1"),
+            subtitle: Text("opt 1 infos"),
+          ))
+    ];
+  }
+
+  PopupMenuButton getMenu() {
+    return PopupMenuButton<int>(itemBuilder: getMenuItems);
+  }
+
+  Widget getNavigationBar() {
+    return NavigationBar(
+      onDestinationSelected: (int index) {
+        navigationController?.changeCurrentPage(index);
+        print("hi");
+      },
+      selectedIndex: navigationController?.currentPageIndex.value ?? 0,
+      destinations: const <Widget>[
+        NavigationDestination(
+          icon: Icon(Icons.kitchen_rounded),
+          label: 'My Pantry',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.shopping_cart_outlined),
+          label: 'My Groceries',
+        )
+      ],
+    );
   }
 
   Widget getMyProducts() {

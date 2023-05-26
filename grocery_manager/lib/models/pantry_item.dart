@@ -5,7 +5,6 @@ class PantryItem extends GetxController {
   var category = "".obs;
   var isBought = false.obs;
   var quantity = 1.obs;
-  var minQuantity = 1.obs;
   Rx<DateTime> expiryDate = DateTime(2023, 5, 16).obs;
   final DateTime defaultDate = DateTime(2023, 5, 16);
   var daysBeforeNotify = 1.obs;
@@ -16,8 +15,7 @@ class PantryItem extends GetxController {
       bool isBought = false,
       int quantity = 1,
       DateTime? expiryDate,
-      int daysBeforeNotify = 1,
-      int minQuantity = 1}) {
+      int daysBeforeNotify = 1}) {
     this.name.value = name;
     this.category.value = category;
     this.isBought.value = isBought;
@@ -26,7 +24,6 @@ class PantryItem extends GetxController {
       this.expiryDate.value = expiryDate;
     }
     this.daysBeforeNotify.value = daysBeforeNotify;
-    this.minQuantity.value = minQuantity;
   }
 
   factory PantryItem.fromJson(Map<String, dynamic> json) {
@@ -35,7 +32,6 @@ class PantryItem extends GetxController {
       category: json['category'],
       isBought: json['isBought'],
       quantity: json['quantity'],
-      minQuantity: json['minQuantity'],
       expiryDate: DateTime.parse(json['expiryDate']),
       daysBeforeNotify: json['daysBeforeNotify'],
     );
@@ -47,7 +43,6 @@ class PantryItem extends GetxController {
       'category': category.value,
       'isBought': isBought.value,
       'quantity': quantity.value,
-      'minQuantity': minQuantity.value,
       'expiryDate': expiryDate.value.toIso8601String(),
       'daysBeforeNotify': daysBeforeNotify.value,
     };

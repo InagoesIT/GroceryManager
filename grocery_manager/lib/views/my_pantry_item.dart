@@ -10,6 +10,7 @@ class MyPantryItem extends MyProduct {
   @override
   final dynamic myProductsController = Get.find<MyPantryController>();
 
+
   MyPantryItem({super.key, super.index});
 
   @override
@@ -55,32 +56,16 @@ class MyPantryItem extends MyProduct {
     ];
   }
 
-  Center getQuantityHandler() {
+  Widget getQuantityHandler() {
     String quantity = "1";
     if (index != null) {
       quantity = myProductsController.products![super.index!].quantity.value
           .toString();
     }
-    String minQuantity = "1";
-    if (index != null) {
-      minQuantity = myProductsController
-          .products![super.index!].minQuantity.value
-          .toString();
-    }
     TextEditingController quantityEditingController =
         TextEditingController(text: quantity);
-    TextEditingController minQuantityEditingController =
-        TextEditingController(text: minQuantity);
 
-    return Center(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        getProductQuantity(quantityEditingController),
-        getSpaceBetweenElements(isVertical: false),
-        getMinProductQuantity(minQuantityEditingController)
-      ],
-    ));
+    return getProductQuantity(quantityEditingController);
   }
 
   Obx getPantryExpiryDate(BuildContext context) {
@@ -114,19 +99,6 @@ class MyPantryItem extends MyProduct {
                 child: const Text("Select expiry date"))
           ],
         )));
-  }
-
-  Widget getMinProductQuantity(
-      TextEditingController minQuantityEditingController) {
-    return SizedBox(
-        width: 150,
-        child: TextField(
-          controller: minQuantityEditingController,
-          decoration: getInputDecoration("Minimum quantity"),
-          keyboardType: TextInputType.number,
-          maxLines: 1,
-          onChanged: (value) => product.minQuantity.value = int.parse(value),
-        ));
   }
 
   Widget getDaysBeforeNotification() {
