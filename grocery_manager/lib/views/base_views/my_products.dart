@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/views/my_groceries.dart';
-import 'package:grocery_manager/views/my_pantry.dart';
+import 'package:grocery_manager/controllers/my_groceries_controller.dart';
+import 'package:grocery_manager/controllers/my_pantry_controller.dart';
+import 'package:grocery_manager/views/filters_page.dart';
 
 import '../../controllers/navigation_controller.dart';
 
@@ -10,12 +11,17 @@ abstract class MyProducts extends StatelessWidget {
   final String? pageTitle = null;
   final bool? isGrocery = null;
   final NavigationController? navigationController = null;
+  static const int FILTER_OPTION_INDEX = 0;
 
   const MyProducts({super.key});
 
   void getToNewMyProduct();
 
   void getToMyProduct(int index);
+
+  List<PopupMenuEntry<int>> getMenuItems(context);
+
+  void handleMenu(selectedIndex);
 
   @override
   Widget build(BuildContext context) {
@@ -35,27 +41,27 @@ abstract class MyProducts extends StatelessWidget {
                 padding: const EdgeInsets.all(5), child: getMyProducts())));
   }
 
-  List<PopupMenuEntry<int>> getMenuItems(context) {
-    return [
-      PopupMenuItem<int>(
-          value: 1,
-          child: ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("opt 1"),
-            subtitle: Text("opt 1 infos"),
-          ))
-    ];
+  PopupMenuItem<int> getFilterMenuOption() {
+    return const PopupMenuItem<int>(
+        value: FILTER_OPTION_INDEX,
+        child: ListTile(
+          leading: Icon(Icons.filter_alt_outlined),
+          title: Text("Filter"),
+          subtitle: Text("Filter items by category"),
+        ));
   }
 
   PopupMenuButton getMenu() {
-    return PopupMenuButton<int>(itemBuilder: getMenuItems);
+    return PopupMenuButton<int>(
+      itemBuilder: getMenuItems,
+      onSelected: (selectedIndex) => handleMenu(selectedIndex),
+    );
   }
 
   Widget getNavigationBar() {
     return NavigationBar(
       onDestinationSelected: (int index) {
         navigationController?.changeCurrentPage(index);
-        print("hi");
       },
       selectedIndex: navigationController?.currentPageIndex.value ?? 0,
       destinations: const <Widget>[
@@ -74,42 +80,45 @@ abstract class MyProducts extends StatelessWidget {
   Widget getMyProducts() {
     return Obx(
       () => ListView.builder(
-          itemCount: myProductsController.products!.length,
+          itemCount: myProductsController.getListSize(),
           itemBuilder: (context, index) =>
-              getProduct(myProductsController.products!, index)),
+              getProduct(myProductsController, index)),
     );
   }
 
-  GestureDetector getProduct(List<dynamic> products, int index) {
+  GestureDetector getProduct(dynamic myProductsController, int index) {
     return GestureDetector(
       onTap: () => getToMyProduct(index),
-      onDoubleTap: () => getProductDeleteDialog(products, index),
-      child: Obx(() => getProductItem(products, index)),
+      onDoubleTap: () => getProductDeleteDialog(myProductsController, index),
+      child: Obx(() => getProductItem(myProductsController, index)),
     );
   }
 
-  Future<dynamic> getProductDeleteDialog(List<dynamic> products, int index) {
+  Future<dynamic> getProductDeleteDialog(
+      dynamic myProductsController, int index) {
     return Get.defaultDialog(
         title: "Delete item",
-        middleText: products[index].name.value,
+        middleText: myProductsController.getProduct(index).name.value,
         onCancel: () => Get.back(),
         buttonColor: Colors.redAccent,
         confirmTextColor: Colors.white,
         cancelTextColor: Colors.black,
         onConfirm: () {
-          myProductsController.products.removeAt(index);
+          myProductsController.removeProduct(index);
           Get.back();
         });
   }
 
-  Obx getProductItem(List<dynamic> products, int index) {
-    var product = products[index];
+  Obx getProductItem(dynamic myProductsController, int index) {
+    var product = myProductsController.getProduct(index);
 
     return Obx(() => Card(
             child: ListTile(
           title: getProductName(product),
           subtitle: getProductCategory(product),
-          leading: isGrocery! ? getProductCheckbox(products, index) : null,
+          leading: isGrocery!
+              ? getProductCheckbox(myProductsController, index)
+              : null,
           trailing: getProductQuantity(product),
         )));
   }
@@ -135,16 +144,16 @@ abstract class MyProducts extends StatelessWidget {
         : TextDecoration.none;
   }
 
-  Obx getProductCheckbox(List<dynamic> products, int index) {
-    var product = myProductsController.products[index];
+  Obx getProductCheckbox(dynamic myProductsController, int index) {
+    var product = myProductsController.getProduct(index);
 
     return Obx(() => Checkbox(
           value: product.isBought.value,
           onChanged: (isEnabled) {
             product.isBought.value = !product.isBought.value;
             if (product.isBought.value) {
-              myProductsController.products.removeAt(index);
-              myProductsController.products.add(product);
+              myProductsController.removeProductWithIndex(index);
+              myProductsController.addProduct(product);
             }
           },
         ));
@@ -156,5 +165,13 @@ abstract class MyProducts extends StatelessWidget {
             color: Colors.grey,
             fontSize: 13,
             decoration: isGrocery! ? getTextDecoration(product) : null));
+  }
+
+  void redirectToFilterPage() {
+    if (isGrocery!) {
+      Get.to(FiltersPage<MyGroceriesController>());
+      return;
+    }
+    Get.to(FiltersPage<MyPantryController>());
   }
 }

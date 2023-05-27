@@ -15,7 +15,7 @@ class MyGrocery extends MyProduct {
 
   @override
   dynamic getUpdatedProduct() {
-    Grocery updatedGrocery = myProductsController.products![super.index!];
+    Grocery updatedGrocery = myProductsController.getProduct(super.index!);
     if (product.name.value != "") {
       updatedGrocery.name.value = product.name.value;
     }
@@ -33,11 +33,14 @@ class MyGrocery extends MyProduct {
   List<Widget> getProductElements(BuildContext context) {
     String name = "";
     if (index != null) {
-      name = myProductsController.products![super.index!].name.value;
+      name = myProductsController.getProduct(super.index!).name.value;
     }
     String quantity = "1";
     if (index != null) {
-      quantity = myProductsController.products![super.index!].quantity.value
+      quantity = myProductsController
+          .getProduct(super.index!)
+          .quantity
+          .value
           .toString();
     }
     TextEditingController nameEditingController =

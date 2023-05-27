@@ -10,12 +10,11 @@ class MyPantryItem extends MyProduct {
   @override
   final dynamic myProductsController = Get.find<MyPantryController>();
 
-
   MyPantryItem({super.key, super.index});
 
   @override
   dynamic getUpdatedProduct() {
-    PantryItem updatedGrocery = myProductsController.products![super.index!];
+    PantryItem updatedGrocery = myProductsController.getProduct(super.index!);
     if (product.name.value != "") {
       updatedGrocery.name.value = product.name.value;
     }
@@ -36,7 +35,7 @@ class MyPantryItem extends MyProduct {
   List<Widget> getProductElements(BuildContext context) {
     String name = "";
     if (index != null) {
-      name = myProductsController.products![super.index!].name.value;
+      name = myProductsController.getProduct(super.index!).name.value;
     }
     TextEditingController nameEditingController =
         TextEditingController(text: name);
@@ -59,7 +58,10 @@ class MyPantryItem extends MyProduct {
   Widget getQuantityHandler() {
     String quantity = "1";
     if (index != null) {
-      quantity = myProductsController.products![super.index!].quantity.value
+      quantity = myProductsController
+          .getProduct(super.index!)
+          .quantity
+          .value
           .toString();
     }
     TextEditingController quantityEditingController =
@@ -73,7 +75,7 @@ class MyPantryItem extends MyProduct {
     if (index == null) {
       date.value = product.expiryDate.value;
     } else {
-      date.value = myProductsController.products[index].expiryDate.value;
+      date.value = myProductsController.getProduct(index).expiryDate.value;
     }
 
     return Obx(() => Center(
@@ -105,7 +107,9 @@ class MyPantryItem extends MyProduct {
     String daysBeforeNotify = "1";
     if (index != null) {
       daysBeforeNotify = myProductsController
-          .products![super.index!].daysBeforeNotify.value
+          .getProduct(super.index!)
+          .daysBeforeNotify
+          .value
           .toString();
     }
     TextEditingController daysBeforeEditingController =

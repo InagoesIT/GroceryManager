@@ -4,7 +4,7 @@ import '../models/pantry_item.dart';
 
 class MyPantryController extends MyProductsController {
   @override
-  RxList<dynamic>? products = <PantryItem>[].obs;
+  RxList<dynamic>? _products = <PantryItem>[].obs;
   @override
   String? key = "my_pantry";
 }

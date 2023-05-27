@@ -94,7 +94,7 @@ abstract class MyProduct extends StatelessWidget {
               : (categoryIndex) => {
                     currentCategoryIndex.value = categoryIndex!,
                     product.category.value = productsCategoryController
-                        .productCategories[currentCategoryIndex.value]
+                        .getCategory(currentCategoryIndex.value)
                   },
         ));
   }
@@ -102,13 +102,11 @@ abstract class MyProduct extends StatelessWidget {
   int getCurrentCategoryIndex() {
     if (index != null) {
       String currentCategory =
-          myProductsController.products![index!].category.value;
-      return productsCategoryController.productCategories
-          .indexOf(currentCategory);
+          myProductsController.getProduct(index!).category.value;
+      return productsCategoryController.getIndexOf(currentCategory);
     }
     if (product.category.value.isNotEmpty) {
-      return productsCategoryController.productCategories
-          .indexOf(product.category.value);
+      return productsCategoryController.getIndexOf(product.category.value);
     }
     return -1;
   }
@@ -117,11 +115,11 @@ abstract class MyProduct extends StatelessWidget {
     List<DropdownMenuItem<int>> dropdownItems = List.empty(growable: true);
 
     for (int index = 0;
-        index < productsCategoryController.productCategories.length;
+        index < productsCategoryController.getListSize();
         index++) {
       dropdownItems.add(DropdownMenuItem<int>(
           value: index,
-          child: Text(productsCategoryController.productCategories[index])));
+          child: Text(productsCategoryController.getCategory(index)!)));
     }
 
     return dropdownItems;
@@ -151,7 +149,8 @@ abstract class MyProduct extends StatelessWidget {
         if (index == null) {
           myProductsController.addProduct(product);
         } else {
-          myProductsController.products![index!] = getUpdatedProduct();
+          dynamic updatedProduct = getUpdatedProduct();
+          myProductsController.setIndexWithProduct(index!, updatedProduct);
         }
 
         Get.back();

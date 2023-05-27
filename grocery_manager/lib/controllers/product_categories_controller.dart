@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class ProductsCategoryController extends GetxController {
-  RxList productCategories = <String>[].obs;
+  RxList _productCategories = <String>[].obs;
 
   @override
   void onInit() {
@@ -10,17 +10,32 @@ class ProductsCategoryController extends GetxController {
         GetStorage().read<List>('product_categories');
 
     if (storedProductCategories != null) {
-      productCategories = storedProductCategories.toList().obs;
+      _productCategories = storedProductCategories.toList().obs;
     }
-    ever(productCategories, (_) {
-      GetStorage().write('product_categories', productCategories.toList());
+    ever(_productCategories, (_) {
+      GetStorage().write('product_categories', _productCategories.toList());
     });
     super.onInit();
   }
 
   void addProductCategory(String category) {
-    if (!productCategories.contains(category)) {
-      productCategories.add(category);
+    if (!_productCategories.contains(category)) {
+      _productCategories.add(category);
     }
+  }
+
+  String? getCategory(int index) {
+    if (index > -1 && index < _productCategories.length) {
+      return _productCategories[index];
+    }
+    return null;
+  }
+
+  int getIndexOf(String category) {
+    return _productCategories.indexOf(category);
+  }
+
+  int getListSize() {
+    return _productCategories.length;
   }
 }

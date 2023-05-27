@@ -1,3 +1,4 @@
+import 'package:flutter/src/material/popup_menu.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/views/base_views/my_products.dart';
 import '../controllers/my_groceries_controller.dart';
@@ -7,7 +8,7 @@ import 'my_grocery.dart';
 
 class MyGroceries extends MyProducts {
   @override
-  final dynamic myProductsController = Get.put(MyGroceriesController());
+  final dynamic myProductsController = Get.find<MyGroceriesController>();
   @override
   final String? pageTitle = "My Groceries";
   @override
@@ -17,7 +18,7 @@ class MyGroceries extends MyProducts {
       Get.find<ProductsCategoryController>();
   @override
   final NavigationController? navigationController =
-      Get.put(NavigationController());
+      Get.find<NavigationController>();
 
   MyGroceries({super.key});
 
@@ -29,5 +30,17 @@ class MyGroceries extends MyProducts {
   @override
   void getToNewMyProduct() {
     Get.to(MyGrocery());
+  }
+
+  @override
+  List<PopupMenuEntry<int>> getMenuItems(context) {
+    return [getFilterMenuOption()];
+  }
+
+  @override
+  void handleMenu(selectedIndex) {
+    if (selectedIndex == MyProducts.FILTER_OPTION_INDEX) {
+      redirectToFilterPage();
+    }
   }
 }
