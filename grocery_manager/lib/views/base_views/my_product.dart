@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/product_categories_controller.dart';
 
+import '../../controllers/my_products_controller.dart';
+
 abstract class MyProduct extends StatelessWidget {
   final dynamic product = null;
-  final dynamic myProductsController = null;
+  final MyProductsController? myProductsController = null;
   final int? index;
   final ProductsCategoryController productsCategoryController = Get.find();
 
@@ -102,7 +104,7 @@ abstract class MyProduct extends StatelessWidget {
   int getCurrentCategoryIndex() {
     if (index != null) {
       String currentCategory =
-          myProductsController.getProduct(index!).category.value;
+          myProductsController!.getProduct(index!).category.value;
       return productsCategoryController.getIndexOf(currentCategory);
     }
     if (product.category.value.isNotEmpty) {
@@ -147,10 +149,10 @@ abstract class MyProduct extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {
         if (index == null) {
-          myProductsController.addProduct(product);
+          myProductsController!.addProduct(product);
         } else {
           dynamic updatedProduct = getUpdatedProduct();
-          myProductsController.setIndexWithProduct(index!, updatedProduct);
+          myProductsController!.setIndexWithProduct(index!, updatedProduct);
         }
 
         Get.back();

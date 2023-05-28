@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/my_pantry_controller.dart';
 import 'package:grocery_manager/models/pantry_item.dart';
 import 'package:grocery_manager/views/base_views/my_product.dart';
+
+import '../controllers/my_products_controller.dart';
 
 class MyPantryItem extends MyProduct {
   @override
   final dynamic product = PantryItem();
   @override
-  final dynamic myProductsController = Get.find<MyPantryController>();
+  final MyProductsController myProductsController =
+      Get.find<MyProductsController<PantryItem>>();
 
   MyPantryItem({super.key, super.index});
 
@@ -75,7 +77,7 @@ class MyPantryItem extends MyProduct {
     if (index == null) {
       date.value = product.expiryDate.value;
     } else {
-      date.value = myProductsController.getProduct(index).expiryDate.value;
+      date.value = myProductsController.getProduct(index!).expiryDate.value;
     }
 
     return Obx(() => Center(

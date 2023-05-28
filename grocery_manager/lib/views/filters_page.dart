@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/my_products_controller.dart';
 import 'package:grocery_manager/controllers/product_categories_controller.dart';
+import 'package:grocery_manager/models/product.dart';
 
-class FiltersPage<T extends MyProductsController> extends StatelessWidget {
-  final T myProductsController = Get.find<T>();
+import '../controllers/my_products_controller.dart';
+
+class FiltersPage<T extends Product> extends StatelessWidget {
+  final MyProductsController<T> myProductsController =
+      Get.find<MyProductsController<T>>();
   final ProductsCategoryController productsCategoryController =
       Get.find<ProductsCategoryController>();
   static const String NO_CATEGORY = "";

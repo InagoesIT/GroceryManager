@@ -11,7 +11,6 @@ class NavigationController extends GetxController {
     if (pageIndex == currentPageIndex.value) {
       return;
     }
-    print(pageIndex);
     currentPageIndex.value = pageIndex;
     if (pageIndex == PANTRY_PAGE_INDEX) {
       Get.to(MyPantry());

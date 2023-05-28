@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/my_groceries_controller.dart';
+import 'package:grocery_manager/controllers/my_products_controller.dart';
 import 'package:grocery_manager/views/base_views/my_product.dart';
 
 import '../models/grocery.dart';
@@ -9,13 +9,14 @@ class MyGrocery extends MyProduct {
   @override
   final dynamic product = Grocery();
   @override
-  final dynamic myProductsController = Get.find<MyGroceriesController>();
+  final MyProductsController? myProductsController =
+      Get.find<MyProductsController<Grocery>>();
 
   MyGrocery({super.key, super.index});
 
   @override
   dynamic getUpdatedProduct() {
-    Grocery updatedGrocery = myProductsController.getProduct(super.index!);
+    Grocery updatedGrocery = myProductsController!.getProduct(super.index!);
     if (product.name.value != "") {
       updatedGrocery.name.value = product.name.value;
     }
@@ -33,11 +34,11 @@ class MyGrocery extends MyProduct {
   List<Widget> getProductElements(BuildContext context) {
     String name = "";
     if (index != null) {
-      name = myProductsController.getProduct(super.index!).name.value;
+      name = myProductsController!.getProduct(super.index!).name.value;
     }
     String quantity = "1";
     if (index != null) {
-      quantity = myProductsController
+      quantity = myProductsController!
           .getProduct(super.index!)
           .quantity
           .value
