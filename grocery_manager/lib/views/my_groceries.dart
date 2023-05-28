@@ -16,7 +16,7 @@ class MyGroceries extends MyProducts {
   @override
   final bool? isGrocery = true;
   @override
-  final dynamic productCategoriesController =
+  final ProductsCategoryController productCategoriesController =
       Get.find<ProductsCategoryController>();
   @override
   final NavigationController? navigationController =

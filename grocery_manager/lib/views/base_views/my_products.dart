@@ -83,11 +83,12 @@ abstract class MyProducts extends StatelessWidget {
       () => ListView.builder(
           itemCount: myProductsController!.getListSize(),
           itemBuilder: (context, index) =>
-              getProduct(myProductsController, index)),
+              getProduct(myProductsController!, index)),
     );
   }
 
-  GestureDetector getProduct(dynamic myProductsController, int index) {
+  GestureDetector getProduct(
+      MyProductsController myProductsController, int index) {
     return GestureDetector(
       onTap: () => getToMyProduct(index),
       onDoubleTap: () => getProductDeleteDialog(myProductsController, index),
@@ -96,21 +97,21 @@ abstract class MyProducts extends StatelessWidget {
   }
 
   Future<dynamic> getProductDeleteDialog(
-      dynamic myProductsController, int index) {
+      MyProductsController myProductsController, int index) {
     return Get.defaultDialog(
         title: "Delete item",
-        middleText: myProductsController.getProduct(index).name.value,
+        middleText: myProductsController.getProduct(index)!.name.value,
         onCancel: () => Get.back(),
         buttonColor: Colors.redAccent,
         confirmTextColor: Colors.white,
         cancelTextColor: Colors.black,
         onConfirm: () {
-          myProductsController.removeProduct(index);
+          myProductsController.removeProductWithIndex(index);
           Get.back();
         });
   }
 
-  Obx getProductItem(dynamic myProductsController, int index) {
+  Obx getProductItem(MyProductsController myProductsController, int index) {
     var product = myProductsController.getProduct(index);
 
     return Obx(() => Card(
@@ -131,7 +132,7 @@ abstract class MyProducts extends StatelessWidget {
             : null);
   }
 
-  Text getProductCategory(dynamic product) {
+  Text getProductCategory( product) {
     return Text(product.category.value,
         style: TextStyle(
             color: Colors.grey,

@@ -5,18 +5,18 @@ import 'package:grocery_manager/views/base_views/my_product.dart';
 
 import '../controllers/my_products_controller.dart';
 
-class MyPantryItem extends MyProduct {
+class MyPantryItem extends MyProduct<PantryItem> {
   @override
-  final dynamic product = PantryItem();
+  final PantryItem product = PantryItem();
   @override
-  final MyProductsController myProductsController =
+  final MyProductsController<PantryItem> myProductsController =
       Get.find<MyProductsController<PantryItem>>();
 
   MyPantryItem({super.key, super.index});
 
   @override
-  dynamic getUpdatedProduct() {
-    PantryItem updatedGrocery = myProductsController.getProduct(super.index!);
+  PantryItem getUpdatedProduct() {
+    PantryItem updatedGrocery = myProductsController.getProduct(super.index!)!;
     if (product.name.value != "") {
       updatedGrocery.name.value = product.name.value;
     }
@@ -37,7 +37,7 @@ class MyPantryItem extends MyProduct {
   List<Widget> getProductElements(BuildContext context) {
     String name = "";
     if (index != null) {
-      name = myProductsController.getProduct(super.index!).name.value;
+      name = myProductsController.getProduct(super.index!)!.name.value;
     }
     TextEditingController nameEditingController =
         TextEditingController(text: name);
@@ -61,7 +61,7 @@ class MyPantryItem extends MyProduct {
     String quantity = "1";
     if (index != null) {
       quantity = myProductsController
-          .getProduct(super.index!)
+          .getProduct(super.index!)!
           .quantity
           .value
           .toString();
@@ -77,7 +77,7 @@ class MyPantryItem extends MyProduct {
     if (index == null) {
       date.value = product.expiryDate.value;
     } else {
-      date.value = myProductsController.getProduct(index!).expiryDate.value;
+      date.value = myProductsController.getProduct(index!)!.expiryDate.value;
     }
 
     return Obx(() => Center(
@@ -109,7 +109,7 @@ class MyPantryItem extends MyProduct {
     String daysBeforeNotify = "1";
     if (index != null) {
       daysBeforeNotify = myProductsController
-          .getProduct(super.index!)
+          .getProduct(super.index!)!
           .daysBeforeNotify
           .value
           .toString();

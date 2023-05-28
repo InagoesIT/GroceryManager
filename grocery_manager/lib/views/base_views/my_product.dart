@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/product_categories_controller.dart';
 
 import '../../controllers/my_products_controller.dart';
+import '../../models/product.dart';
 
-abstract class MyProduct extends StatelessWidget {
-  final dynamic product = null;
-  final MyProductsController? myProductsController = null;
+abstract class MyProduct<T extends Product> extends StatelessWidget {
+  final T? product = null;
+  final MyProductsController<T>? myProductsController = null;
   final int? index;
   final ProductsCategoryController productsCategoryController = Get.find();
 
@@ -48,7 +49,7 @@ abstract class MyProduct extends StatelessWidget {
           decoration: getInputDecoration("Name"),
           keyboardType: TextInputType.text,
           maxLines: 1,
-          onChanged: (value) => product.name.value = value,
+          onChanged: (value) => product!.name.value = value,
         ));
   }
 
@@ -95,8 +96,8 @@ abstract class MyProduct extends StatelessWidget {
               ? null
               : (categoryIndex) => {
                     currentCategoryIndex.value = categoryIndex!,
-                    product.category.value = productsCategoryController
-                        .getCategory(currentCategoryIndex.value)
+                    product!.category.value = productsCategoryController
+                        .getCategory(currentCategoryIndex.value)!
                   },
         ));
   }
@@ -104,11 +105,11 @@ abstract class MyProduct extends StatelessWidget {
   int getCurrentCategoryIndex() {
     if (index != null) {
       String currentCategory =
-          myProductsController!.getProduct(index!).category.value;
+          myProductsController!.getProduct(index!)!.category.value;
       return productsCategoryController.getIndexOf(currentCategory);
     }
-    if (product.category.value.isNotEmpty) {
-      return productsCategoryController.getIndexOf(product.category.value);
+    if (product!.category.value.isNotEmpty) {
+      return productsCategoryController.getIndexOf(product!.category.value);
     }
     return -1;
   }
@@ -149,9 +150,9 @@ abstract class MyProduct extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {
         if (index == null) {
-          myProductsController!.addProduct(product);
+          myProductsController!.addProduct(product!);
         } else {
-          dynamic updatedProduct = getUpdatedProduct();
+          T updatedProduct = getUpdatedProduct();
           myProductsController!.setIndexWithProduct(index!, updatedProduct);
         }
 
@@ -240,9 +241,9 @@ abstract class MyProduct extends StatelessWidget {
           decoration: getInputDecoration("Quantity"),
           keyboardType: TextInputType.number,
           maxLines: 1,
-          onChanged: (value) => product.quantity.value = int.parse(value),
+          onChanged: (value) => product!.quantity.value = int.parse(value),
         ));
   }
 
-  dynamic getUpdatedProduct();
+  T getUpdatedProduct();
 }

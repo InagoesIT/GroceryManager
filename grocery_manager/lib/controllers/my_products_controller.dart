@@ -17,30 +17,30 @@ class MyProductsController<T extends Product> extends GetxController {
     List? storedProducts = GetStorage().read<List>(key);
 
     if (storedProducts != null) {
-      T product = createProductFunction();
       for (Map<String, dynamic> productMap in storedProducts) {
+        T product = createProductFunction();
         product.fromJson(productMap);
         _products.add(product);
       }
     }
     ever(_products, (_) {
-      GetStorage().write(key!, _products.toList());
+      GetStorage().write(key, _products.toList());
     });
     super.onInit();
   }
 
-  void addProduct(dynamic product) {
+  void addProduct(T product) {
     _products.add(product);
   }
 
-  dynamic getProduct(int index) {
+  T? getProduct(int index) {
     if (index > -1 && index < _products.length) {
       return _products[index];
     }
     return null;
   }
 
-  int? getIndexOf(dynamic product) {
+  int? getIndexOf(T product) {
     return _products.indexOf(product);
   }
 
@@ -48,7 +48,7 @@ class MyProductsController<T extends Product> extends GetxController {
     return _products.length;
   }
 
-  void setIndexWithProduct(int index, dynamic product) {
+  void setIndexWithProduct(int index, T product) {
     if (index < 0 && index >= _products.length) {
       return;
     }
