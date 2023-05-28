@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/models/pantry_item.dart';
+import 'package:grocery_manager/models/product.dart';
 import 'package:grocery_manager/views/filters_page.dart';
 
 import '../../controllers/my_products_controller.dart';
 import '../../controllers/navigation_controller.dart';
 import '../../models/grocery.dart';
 
-abstract class MyProducts extends StatelessWidget {
-  final MyProductsController? myProductsController = null;
+abstract class MyProducts<T extends Product> extends StatelessWidget {
+  final MyProductsController<T>? myProductsController = null;
   final String? pageTitle = null;
   final bool? isGrocery = null;
   final NavigationController? navigationController = null;
@@ -23,6 +24,9 @@ abstract class MyProducts extends StatelessWidget {
   List<PopupMenuEntry<int>> getMenuItems(context);
 
   void handleMenu(selectedIndex);
+
+  Obx? getProductCheckbox(
+      MyProductsController<T> myProductsController, int index);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +92,7 @@ abstract class MyProducts extends StatelessWidget {
   }
 
   GestureDetector getProduct(
-      MyProductsController myProductsController, int index) {
+      MyProductsController<T> myProductsController, int index) {
     return GestureDetector(
       onTap: () => getToMyProduct(index),
       onDoubleTap: () => getProductDeleteDialog(myProductsController, index),
@@ -111,8 +115,8 @@ abstract class MyProducts extends StatelessWidget {
         });
   }
 
-  Obx getProductItem(MyProductsController myProductsController, int index) {
-    var product = myProductsController.getProduct(index);
+  Obx getProductItem(MyProductsController<T> myProductsController, int index) {
+    T product = myProductsController.getProduct(index)!;
 
     return Obx(() => Card(
             child: ListTile(
@@ -125,14 +129,14 @@ abstract class MyProducts extends StatelessWidget {
         )));
   }
 
-  Text getProductName(dynamic product) {
+  Text getProductName(T product) {
     return Text(product.name.value,
         style: isGrocery!
             ? TextStyle(decoration: getTextDecoration(product))
             : null);
   }
 
-  Text getProductCategory( product) {
+  Text getProductCategory(T product) {
     return Text(product.category.value,
         style: TextStyle(
             color: Colors.grey,
@@ -140,25 +144,8 @@ abstract class MyProducts extends StatelessWidget {
             decoration: isGrocery! ? getTextDecoration(product) : null));
   }
 
-  TextDecoration getTextDecoration(dynamic product) {
-    return product.isBought.value
-        ? TextDecoration.lineThrough
-        : TextDecoration.none;
-  }
-
-  Obx getProductCheckbox(dynamic myProductsController, int index) {
-    var product = myProductsController.getProduct(index);
-
-    return Obx(() => Checkbox(
-          value: product.isBought.value,
-          onChanged: (isEnabled) {
-            product.isBought.value = !product.isBought.value;
-            if (product.isBought.value) {
-              myProductsController.removeProductWithIndex(index);
-              myProductsController.addProduct(product);
-            }
-          },
-        ));
+  TextDecoration getTextDecoration(T product) {
+    return TextDecoration.none;
   }
 
   Text getProductQuantity(dynamic product) {

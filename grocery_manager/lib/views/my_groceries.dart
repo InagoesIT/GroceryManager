@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/src/material/popup_menu.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/my_products_controller.dart';
@@ -7,9 +8,9 @@ import '../controllers/navigation_controller.dart';
 import '../controllers/product_categories_controller.dart';
 import 'my_grocery.dart';
 
-class MyGroceries extends MyProducts {
+class MyGroceries extends MyProducts<Grocery> {
   @override
-  final MyProductsController? myProductsController =
+  final MyProductsController<Grocery>? myProductsController =
       Get.find<MyProductsController<Grocery>>();
   @override
   final String? pageTitle = "My Groceries";
@@ -44,5 +45,29 @@ class MyGroceries extends MyProducts {
     if (selectedIndex == MyProducts.FILTER_OPTION_INDEX) {
       redirectToFilterPage();
     }
+  }
+
+  @override
+  Obx? getProductCheckbox(
+      MyProductsController<Grocery> myProductsController, int index) {
+    var product = myProductsController.getProduct(index);
+
+    return Obx(() => Checkbox(
+          value: product!.isBought.value,
+          onChanged: (isEnabled) {
+            product.isBought.value = !product.isBought.value;
+            if (product.isBought.value) {
+              myProductsController.removeProductWithIndex(index);
+              myProductsController.addProduct(product);
+            }
+          },
+        ));
+  }
+
+  @override
+  TextDecoration getTextDecoration(Grocery product) {
+    return product.isBought.value
+        ? TextDecoration.lineThrough
+        : TextDecoration.none;
   }
 }

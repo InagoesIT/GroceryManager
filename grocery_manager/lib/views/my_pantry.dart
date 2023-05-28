@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/my_products_controller.dart';
@@ -7,22 +8,28 @@ import 'package:grocery_manager/views/my_pantry_item.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/product_categories_controller.dart';
 
-class MyPantry extends MyProducts {
+class MyPantry extends MyProducts<PantryItem> {
   @override
   final NavigationController? navigationController =
       Get.find<NavigationController>();
   @override
-  final MyProductsController? myProductsController =
+  final MyProductsController<PantryItem>? myProductsController =
       Get.find<MyProductsController<PantryItem>>();
   @override
   final String? pageTitle = "My Pantry";
   @override
   final bool? isGrocery = false;
   @override
-  final dynamic productCategoriesController =
+  final ProductsCategoryController productCategoriesController =
       Get.find<ProductsCategoryController>();
 
   MyPantry({super.key});
+
+  @override
+  Obx? getProductCheckbox(
+      MyProductsController<PantryItem> myProductsController, int index) {
+    return null;
+  }
 
   @override
   void getToMyProduct(int index) {
