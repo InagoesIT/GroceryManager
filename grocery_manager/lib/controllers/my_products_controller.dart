@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import '../models/product.dart';
-import '../views/filters_page.dart';
+import '../models/product_model.dart';
+import '../views/filters_view.dart';
 
-class MyProductsController<T extends Product> extends GetxController {
+class MyProductsController<T extends ProductModel> extends GetxController {
   final RxList<T> _allProducts = List<T>.empty(growable: true).obs;
-  RxList<T> _products = List<T>.empty(growable: true).obs;
+  final RxList<T> _products = List<T>.empty(growable: true).obs;
   String key;
-  RxString currentFilter = FiltersPage.NO_CATEGORY.obs;
+  RxString currentFilter = FiltersView.NO_CATEGORY.obs;
   Function createProductFunction;
 
   MyProductsController(
@@ -18,7 +18,7 @@ class MyProductsController<T extends Product> extends GetxController {
     List? storedProducts = GetStorage().read<List>(key);
 
     if (storedProducts != null) {
-      for (Map<String, dynamic> productMap in storedProducts) {
+      for (var productMap in storedProducts) {
         T product = createProductFunction();
         product.fromJson(productMap);
         _allProducts.add(product);
@@ -32,7 +32,7 @@ class MyProductsController<T extends Product> extends GetxController {
   }
 
   void filterProducts() {
-    if (currentFilter.value == FiltersPage.NO_CATEGORY) {
+    if (currentFilter.value == FiltersView.NO_CATEGORY) {
       _products.value = _allProducts;
       return;
     }

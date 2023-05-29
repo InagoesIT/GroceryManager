@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/models/pantry_item.dart';
-import 'package:grocery_manager/models/product.dart';
-import 'package:grocery_manager/views/filters_page.dart';
+import 'package:grocery_manager/models/pantry_item_model.dart';
+import 'package:grocery_manager/models/product_model.dart';
+import 'package:grocery_manager/views/filters_view.dart';
 
 import '../../controllers/my_products_controller.dart';
 import '../../controllers/navigation_controller.dart';
-import '../../models/grocery.dart';
+import '../../models/grocery_model.dart';
 
-abstract class MyProducts<T extends Product> extends StatelessWidget {
+abstract class MyProductsView<T extends ProductModel> extends StatelessWidget {
   final MyProductsController<T>? myProductsController = null;
   final String? pageTitle = null;
   final bool? isGrocery = null;
   final NavigationController? navigationController = null;
   static const int FILTER_OPTION_INDEX = 0;
 
-  const MyProducts({super.key});
+  const MyProductsView({super.key});
 
   void getToNewMyProduct();
 
@@ -43,7 +43,8 @@ abstract class MyProducts<T extends Product> extends StatelessWidget {
               onPressed: () => getToNewMyProduct(),
             ),
             body: Padding(
-                padding: const EdgeInsets.all(5), child: getMyProducts())));
+                padding: const EdgeInsets.all(5),
+                child: Obx(() => getMyProducts()))));
   }
 
   PopupMenuItem<int> getFilterMenuOption() {
@@ -83,12 +84,22 @@ abstract class MyProducts<T extends Product> extends StatelessWidget {
   }
 
   Widget getMyProducts() {
-    return Obx(
-      () => ListView.builder(
-          itemCount: myProductsController!.getListSize(),
-          itemBuilder: (context, index) =>
-              getProduct(myProductsController!, index)),
-    );
+    int? listSize = myProductsController!.getListSize();
+    if (listSize == null || listSize == 0) {
+      return getNoProductsText();
+    }
+    return ListView.builder(
+        itemCount: listSize,
+        itemBuilder: (context, index) =>
+            getProduct(myProductsController!, index));
+  }
+
+  Widget getNoProductsText() {
+    return const Center(
+        child: Text(
+      "There are currently no items here.",
+      style: TextStyle(fontSize: 20),
+    ));
   }
 
   GestureDetector getProduct(
@@ -158,9 +169,9 @@ abstract class MyProducts<T extends Product> extends StatelessWidget {
 
   void redirectToFilterPage() {
     if (isGrocery!) {
-      Get.to(FiltersPage<Grocery>());
+      Get.to(FiltersView<GroceryModel>());
       return;
     }
-    Get.to(FiltersPage<PantryItem>());
+    Get.to(FiltersView<PantryItemModel>());
   }
 }

@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import 'package:grocery_manager/models/product.dart';
+import 'package:grocery_manager/models/product_model.dart';
 
-class PantryItem extends Product {
+class PantryItemModel extends ProductModel {
   var isBought = false.obs;
   Rx<DateTime> expiryDate = DateTime(2023, 5, 16).obs;
   final DateTime defaultDate = DateTime(2023, 5, 16);
   var daysBeforeNotify = 1.obs;
 
-  PantryItem({
+  PantryItemModel({
     String name = "",
     String category = "",
     int quantity = 1,

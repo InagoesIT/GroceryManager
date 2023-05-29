@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/product_categories_controller.dart';
-import 'package:grocery_manager/models/grocery.dart';
-import 'package:grocery_manager/models/product.dart';
-import 'package:grocery_manager/views/my_groceries.dart';
-import 'package:grocery_manager/views/my_pantry.dart';
+import 'package:grocery_manager/models/product_model.dart';
 
 import '../controllers/my_products_controller.dart';
 
-class FiltersPage<T extends Product> extends StatelessWidget {
+class FiltersView<T extends ProductModel> extends StatelessWidget {
   final MyProductsController<T> myProductsController =
       Get.find<MyProductsController<T>>();
   final ProductsCategoryController productsCategoryController =
       Get.find<ProductsCategoryController>();
   static const String NO_CATEGORY = "";
-  RxString currentFilter = FiltersPage.NO_CATEGORY.obs;
+  RxString currentFilter = FiltersView.NO_CATEGORY.obs;
 
-  FiltersPage({super.key});
+  FiltersView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +84,7 @@ class FiltersPage<T extends Product> extends StatelessWidget {
   }
 
   void deleteFilter() {
-    currentFilter.value = FiltersPage.NO_CATEGORY;
+    currentFilter.value = FiltersView.NO_CATEGORY;
     myProductsController.currentFilter.value = currentFilter.value;
     redirect();
   }

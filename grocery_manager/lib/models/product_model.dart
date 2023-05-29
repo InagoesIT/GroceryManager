@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 
-class Product extends GetxController {
+class ProductModel extends GetxController {
   var name = "".obs;
   var category = "".obs;
   var quantity = 1.obs;
 
-  Product({
+  ProductModel({
     String name = "",
     String category = "",
     int quantity = 1,

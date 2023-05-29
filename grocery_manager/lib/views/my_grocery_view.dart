@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/my_products_controller.dart';
-import 'package:grocery_manager/models/product.dart';
-import 'package:grocery_manager/views/base_views/my_product.dart';
+import 'package:grocery_manager/models/product_model.dart';
+import 'package:grocery_manager/views/base_views/my_product_view.dart';
 
-import '../models/grocery.dart';
+import '../models/grocery_model.dart';
 
-class MyGrocery extends MyProduct<Grocery> {
+class MyGroceryView extends MyProductView<GroceryModel> {
   @override
-  final Grocery product = Grocery();
+  final GroceryModel product = GroceryModel();
   @override
-  final MyProductsController<Grocery> myProductsController =
-      Get.find<MyProductsController<Grocery>>();
+  final MyProductsController<GroceryModel> myProductsController =
+      Get.find<MyProductsController<GroceryModel>>();
 
-  MyGrocery({super.key, super.index});
+  MyGroceryView({super.key, super.index});
 
   @override
-  Grocery getUpdatedProduct() {
-    Grocery updatedGrocery = myProductsController.getProduct(super.index!)!;
+  GroceryModel getUpdatedProduct() {
+    GroceryModel updatedGrocery =
+        myProductsController.getProduct(super.index!)!;
     if (product.name.value != "") {
       updatedGrocery.name.value = product.name.value;
     }

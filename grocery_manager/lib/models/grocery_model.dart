@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:grocery_manager/models/product.dart';
+import 'package:grocery_manager/models/product_model.dart';
 
-class Grocery extends Product {
+class GroceryModel extends ProductModel {
   var isBought = false.obs;
 
-  Grocery({
+  GroceryModel({
     String name = "",
     String category = "",
     bool isBought = false,

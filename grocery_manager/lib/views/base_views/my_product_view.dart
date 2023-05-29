@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/product_categories_controller.dart';
 
 import '../../controllers/my_products_controller.dart';
-import '../../models/product.dart';
+import '../../models/product_model.dart';
 
-abstract class MyProduct<T extends Product> extends StatelessWidget {
+abstract class MyProductView<T extends ProductModel> extends StatelessWidget {
   final T? product = null;
   final MyProductsController<T>? myProductsController = null;
   final int? index;
   final ProductsCategoryController productsCategoryController = Get.find();
 
-  MyProduct({super.key, this.index});
+  MyProductView({super.key, this.index});
 
   @override
   Widget build(BuildContext context) {

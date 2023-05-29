@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/material/popup_menu.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/my_products_controller.dart';
-import 'package:grocery_manager/models/grocery.dart';
-import 'package:grocery_manager/views/base_views/my_products.dart';
+import 'package:grocery_manager/models/grocery_model.dart';
+import 'package:grocery_manager/views/base_views/my_products_view.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/product_categories_controller.dart';
-import 'my_grocery.dart';
+import 'my_grocery_view.dart';
 
-class MyGroceries extends MyProducts<Grocery> {
+class MyGroceriesView extends MyProductsView<GroceryModel> {
   @override
-  final MyProductsController<Grocery>? myProductsController =
-      Get.find<MyProductsController<Grocery>>();
+  final MyProductsController<GroceryModel>? myProductsController =
+      Get.find<MyProductsController<GroceryModel>>();
   @override
   final String? pageTitle = "My Groceries";
   @override
@@ -23,16 +23,16 @@ class MyGroceries extends MyProducts<Grocery> {
   final NavigationController? navigationController =
       Get.find<NavigationController>();
 
-  MyGroceries({super.key});
+  MyGroceriesView({super.key});
 
   @override
   void getToMyProduct(int index) {
-    Get.to(MyGrocery(index: index));
+    Get.to(MyGroceryView(index: index));
   }
 
   @override
   void getToNewMyProduct() {
-    Get.to(MyGrocery());
+    Get.to(MyGroceryView());
   }
 
   @override
@@ -42,14 +42,14 @@ class MyGroceries extends MyProducts<Grocery> {
 
   @override
   void handleMenu(selectedIndex) {
-    if (selectedIndex == MyProducts.FILTER_OPTION_INDEX) {
+    if (selectedIndex == MyProductsView.FILTER_OPTION_INDEX) {
       redirectToFilterPage();
     }
   }
 
   @override
   Obx? getProductCheckbox(
-      MyProductsController<Grocery> myProductsController, int index) {
+      MyProductsController<GroceryModel> myProductsController, int index) {
     var product = myProductsController.getProduct(index);
 
     return Obx(() => Checkbox(
@@ -65,7 +65,7 @@ class MyGroceries extends MyProducts<Grocery> {
   }
 
   @override
-  TextDecoration getTextDecoration(Grocery product) {
+  TextDecoration getTextDecoration(GroceryModel product) {
     return product.isBought.value
         ? TextDecoration.lineThrough
         : TextDecoration.none;
