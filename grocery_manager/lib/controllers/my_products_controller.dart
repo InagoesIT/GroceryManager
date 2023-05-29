@@ -4,7 +4,8 @@ import '../models/product.dart';
 import '../views/filters_page.dart';
 
 class MyProductsController<T extends Product> extends GetxController {
-  final RxList<T> _products = List<T>.empty(growable: true).obs;
+  final RxList<T> _allProducts = List<T>.empty(growable: true).obs;
+  RxList<T> _products = List<T>.empty(growable: true).obs;
   String key;
   RxString currentFilter = FiltersPage.NO_CATEGORY.obs;
   Function createProductFunction;
@@ -20,17 +21,29 @@ class MyProductsController<T extends Product> extends GetxController {
       for (Map<String, dynamic> productMap in storedProducts) {
         T product = createProductFunction();
         product.fromJson(productMap);
-        _products.add(product);
+        _allProducts.add(product);
       }
+      _products.value = _allProducts;
     }
-    ever(_products, (_) {
-      GetStorage().write(key, _products.toList());
+    ever(_allProducts, (_) {
+      GetStorage().write(key, _allProducts.toList());
     });
     super.onInit();
   }
 
+  void filterProducts() {
+    if (currentFilter.value == FiltersPage.NO_CATEGORY) {
+      _products.value = _allProducts;
+      return;
+    }
+    _products.value = _allProducts
+        .where((product) => product.category.value == currentFilter.value)
+        .toList();
+  }
+
   void addProduct(T product) {
-    _products.add(product);
+    _allProducts.add(product);
+    filterProducts();
   }
 
   T? getProduct(int index) {
@@ -59,6 +72,8 @@ class MyProductsController<T extends Product> extends GetxController {
     if (index < 0 && index >= _products.length) {
       return;
     }
-    _products.removeAt(index);
+    T product = _products[index];
+    _allProducts.remove(product);
+    filterProducts();
   }
 }

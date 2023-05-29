@@ -82,7 +82,6 @@ class MyPantryItem extends MyProduct<PantryItem> {
 
     return Obx(() => Center(
             child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(date.value.compareTo(product.defaultDate) == 0
                 ? "No expiry date provided"
@@ -105,7 +104,7 @@ class MyPantryItem extends MyProduct<PantryItem> {
         )));
   }
 
-  Widget getDaysBeforeNotification() {
+  Align getDaysBeforeNotification() {
     String daysBeforeNotify = "1";
     if (index != null) {
       daysBeforeNotify = myProductsController
@@ -117,15 +116,17 @@ class MyPantryItem extends MyProduct<PantryItem> {
     TextEditingController daysBeforeEditingController =
         TextEditingController(text: daysBeforeNotify);
 
-    return SizedBox(
-        width: 200,
-        child: TextField(
-          controller: daysBeforeEditingController,
-          decoration: getInputDecoration("Days before expiry notification"),
-          keyboardType: TextInputType.number,
-          maxLines: 1,
-          onChanged: (value) =>
-              product.daysBeforeNotify.value = int.parse(value),
-        ));
+    return Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox(
+            width: 200,
+            child: TextField(
+              controller: daysBeforeEditingController,
+              decoration: getInputDecoration("Days before expiry notification"),
+              keyboardType: TextInputType.number,
+              maxLines: 1,
+              onChanged: (value) =>
+                  product.daysBeforeNotify.value = int.parse(value),
+            )));
   }
 }

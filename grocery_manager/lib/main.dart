@@ -11,11 +11,11 @@ import 'models/grocery.dart';
 
 void main() async {
   await GetStorage.init();
-  runApp(const MyApp());
+  runApp(const GroceryManager());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class GroceryManager extends StatelessWidget {
+  const GroceryManager({super.key});
 
   void createControllers() {
     Get.put(MyProductsController<Grocery>(

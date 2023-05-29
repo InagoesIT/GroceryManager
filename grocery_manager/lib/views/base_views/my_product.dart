@@ -27,11 +27,9 @@ abstract class MyProduct<T extends Product> extends StatelessWidget {
 
   Widget getBody(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.fromLTRB(30, 30, 0, 0),
       child: SingleChildScrollView(
           child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: getProductElements(context) + getProductButtons(),
       )),
     );
@@ -39,18 +37,20 @@ abstract class MyProduct<T extends Product> extends StatelessWidget {
 
   List<Widget> getProductElements(BuildContext context);
 
-  SizedBox getProductName(TextEditingController nameEditingController) {
-    return SizedBox(
-        width: 250,
-        child: TextField(
-          controller: nameEditingController,
-          autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
-          decoration: getInputDecoration("Name"),
-          keyboardType: TextInputType.text,
-          maxLines: 1,
-          onChanged: (value) => product!.name.value = value,
-        ));
+  Align getProductName(TextEditingController nameEditingController) {
+    return Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox(
+            width: 250,
+            child: TextField(
+              controller: nameEditingController,
+              autofocus: true,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: getInputDecoration("Name"),
+              keyboardType: TextInputType.text,
+              maxLines: 1,
+              onChanged: (value) => product!.name.value = value,
+            )));
   }
 
   SizedBox getSpaceBetweenElements(
@@ -72,7 +72,6 @@ abstract class MyProduct<T extends Product> extends StatelessWidget {
 
   Obx getProductCategoryHandler() {
     return Obx(() => Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             getProductCategory(),
             getSpaceBetweenElements(isVertical: false),
@@ -131,9 +130,12 @@ abstract class MyProduct<T extends Product> extends StatelessWidget {
   List<Widget> getProductButtons() {
     return <Widget>[
       const SizedBox(height: 16),
-      Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[getCancelButton(), getSubmitButton()])
+      Row(children: <Widget>[
+        getSpaceBetweenElements(isVertical: true, multiplier: 4),
+        getCancelButton(),
+        getSpaceBetweenElements(isVertical: false, multiplier: 4),
+        getSubmitButton()
+      ])
     ];
   }
 
@@ -233,16 +235,18 @@ abstract class MyProduct<T extends Product> extends StatelessWidget {
     );
   }
 
-  Widget getProductQuantity(TextEditingController quantityEditingController) {
-    return SizedBox(
-        width: 100,
-        child: TextField(
-          controller: quantityEditingController,
-          decoration: getInputDecoration("Quantity"),
-          keyboardType: TextInputType.number,
-          maxLines: 1,
-          onChanged: (value) => product!.quantity.value = int.parse(value),
-        ));
+  Align getProductQuantity(TextEditingController quantityEditingController) {
+    return Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox(
+            width: 100,
+            child: TextField(
+              controller: quantityEditingController,
+              decoration: getInputDecoration("Quantity"),
+              keyboardType: TextInputType.number,
+              maxLines: 1,
+              onChanged: (value) => product!.quantity.value = int.parse(value),
+            )));
   }
 
   T getUpdatedProduct();
