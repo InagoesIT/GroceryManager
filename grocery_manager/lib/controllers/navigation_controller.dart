@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:grocery_manager/views/my_groceries_view.dart';
-import 'package:grocery_manager/views/my_pantry_view.dart';
+import 'package:grocery_manager/views/groceries_view.dart';
+import 'package:grocery_manager/views/pantry_view.dart';
 
 class NavigationController extends GetxController {
   static const int PANTRY_PAGE_INDEX = 0;
@@ -13,9 +13,9 @@ class NavigationController extends GetxController {
     }
     currentPageIndex.value = pageIndex;
     if (pageIndex == PANTRY_PAGE_INDEX) {
-      Get.to(MyPantryView());
+      Get.to(PantryView());
       return;
     }
-    Get.to(MyGroceriesView());
+    Get.to(GroceriesView());
   }
 }

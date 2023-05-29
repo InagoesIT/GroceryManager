@@ -8,14 +8,14 @@ import '../../controllers/my_products_controller.dart';
 import '../../controllers/navigation_controller.dart';
 import '../../models/grocery_model.dart';
 
-abstract class MyProductsView<T extends ProductModel> extends StatelessWidget {
+abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
   final MyProductsController<T>? myProductsController = null;
   final String? pageTitle = null;
   final bool? isGrocery = null;
   final NavigationController? navigationController = null;
   static const int FILTER_OPTION_INDEX = 0;
 
-  const MyProductsView({super.key});
+  const ProductsView({super.key});
 
   void getToNewMyProduct();
 

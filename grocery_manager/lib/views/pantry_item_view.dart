@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/models/pantry_item_model.dart';
-import 'package:grocery_manager/views/base_views/my_product_view.dart';
+import 'package:grocery_manager/views/base_views/product_view.dart';
 
 import '../controllers/my_products_controller.dart';
 
-class MyPantryItemView extends MyProductView<PantryItemModel> {
+class PantryItemView extends ProductView<PantryItemModel> {
   @override
   final PantryItemModel product = PantryItemModel();
   @override
   final MyProductsController<PantryItemModel> myProductsController =
       Get.find<MyProductsController<PantryItemModel>>();
 
-  MyPantryItemView({super.key, super.index});
+  PantryItemView({super.key, super.index});
 
   @override
   PantryItemModel getUpdatedProduct() {

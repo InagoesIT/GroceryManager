@@ -5,13 +5,13 @@ import 'package:grocery_manager/controllers/product_categories_controller.dart';
 import '../../controllers/my_products_controller.dart';
 import '../../models/product_model.dart';
 
-abstract class MyProductView<T extends ProductModel> extends StatelessWidget {
+abstract class ProductView<T extends ProductModel> extends StatelessWidget {
   final T? product = null;
   final MyProductsController<T>? myProductsController = null;
   final int? index;
   final ProductsCategoryController productsCategoryController = Get.find();
 
-  MyProductView({super.key, this.index});
+  ProductView({super.key, this.index});
 
   List<Widget> getProductElements(BuildContext context);
 

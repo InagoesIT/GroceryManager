@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/my_products_controller.dart';
 import 'package:grocery_manager/models/grocery_model.dart';
 import 'package:grocery_manager/models/pantry_item_model.dart';
-import 'package:grocery_manager/views/base_views/my_products_view.dart';
+import 'package:grocery_manager/views/base_views/products_view.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/product_categories_controller.dart';
-import 'my_grocery_view.dart';
+import 'grocery_view.dart';
 
-class MyGroceriesView extends MyProductsView<GroceryModel> {
+class GroceriesView extends ProductsView<GroceryModel> {
   @override
   final MyProductsController<GroceryModel>? myProductsController =
       Get.find<MyProductsController<GroceryModel>>();
@@ -24,16 +24,16 @@ class MyGroceriesView extends MyProductsView<GroceryModel> {
       Get.find<NavigationController>();
   static const int TRANSFER_TO_PANTRY_INDEX = 1;
 
-  MyGroceriesView({super.key});
+  GroceriesView({super.key});
 
   @override
   void getToMyProduct(int index) {
-    Get.to(MyGroceryView(index: index));
+    Get.to(GroceryView(index: index));
   }
 
   @override
   void getToNewMyProduct() {
-    Get.to(MyGroceryView());
+    Get.to(GroceryView());
   }
 
   @override
@@ -43,9 +43,9 @@ class MyGroceriesView extends MyProductsView<GroceryModel> {
 
   @override
   void handleMenu(selectedIndex) {
-    if (selectedIndex == MyProductsView.FILTER_OPTION_INDEX) {
+    if (selectedIndex == ProductsView.FILTER_OPTION_INDEX) {
       redirectToFilterPage();
-    } else if (selectedIndex == MyGroceriesView.TRANSFER_TO_PANTRY_INDEX) {
+    } else if (selectedIndex == GroceriesView.TRANSFER_TO_PANTRY_INDEX) {
       myProductsController!.transferToPantry();
     }
   }
