@@ -20,6 +20,12 @@ class PantryItemModel extends ProductModel {
     this.daysBeforeNotify.value = daysBeforeNotify;
   }
 
+  PantryItemModel.fromProduct(ProductModel product)
+      : super(
+            name: product.name.value,
+            category: product.category.value,
+            quantity: product.quantity.value);
+
   @override
   void fromJson(Map<String, dynamic> json) {
     super.fromJson(json);
@@ -36,5 +42,14 @@ class PantryItemModel extends ProductModel {
       'expiryDate': expiryDate.value.toIso8601String(),
       'daysBeforeNotify': daysBeforeNotify.value,
     };
+  }
+
+  @override
+  void copyFrom(PantryItemModel grocery) {
+    name.value = grocery.name.value;
+    category.value = grocery.category.value;
+    quantity.value = grocery.quantity.value;
+    expiryDate.value = grocery.expiryDate.value;
+    daysBeforeNotify.value = grocery.daysBeforeNotify.value;
   }
 }

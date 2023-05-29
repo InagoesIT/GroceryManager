@@ -24,9 +24,7 @@ class MyPantryItemView extends MyProductView<PantryItemModel> {
     if (product.category.value != "") {
       updatedGrocery.category.value = product.category.value;
     }
-    if (product.quantity.value != 1) {
-      updatedGrocery.quantity.value = product.quantity.value;
-    }
+    updatedGrocery.quantity.value = product.quantity.value;
     if (product.expiryDate.value.compareTo(product.defaultDate) != 0) {
       updatedGrocery.expiryDate.value = product.expiryDate.value;
     }

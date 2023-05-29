@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:grocery_manager/models/grocery_model.dart';
+import '../models/pantry_item_model.dart';
 import '../models/product_model.dart';
 import '../views/filters_view.dart';
 
@@ -57,7 +59,7 @@ class MyProductsController<T extends ProductModel> extends GetxController {
     return _products.indexOf(product);
   }
 
-  int? getListSize() {
+  int getListSize() {
     return _products.length;
   }
 
@@ -75,5 +77,22 @@ class MyProductsController<T extends ProductModel> extends GetxController {
     T product = _products[index];
     _allProducts.remove(product);
     filterProducts();
+  }
+
+  void transferToPantry() {
+    final MyProductsController<GroceryModel> myGroceryController =
+        Get.find<MyProductsController<GroceryModel>>();
+    final MyProductsController<PantryItemModel> myPantryController =
+        Get.find<MyProductsController<PantryItemModel>>();
+    var groceries = myGroceryController._allProducts;
+
+    for (int index = 0; index < groceries.length; index++) {
+      if (!groceries[index].isBought.value) {
+        continue;
+      }
+      ProductModel product = groceries.removeAt(index);
+      PantryItemModel pantryItem = PantryItemModel.fromProduct(product);
+      myPantryController.addProduct(pantryItem);
+    }
   }
 }

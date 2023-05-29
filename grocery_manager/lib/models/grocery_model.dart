@@ -28,4 +28,12 @@ class GroceryModel extends ProductModel {
       'quantity': quantity.value
     };
   }
+
+  @override
+  void copyFrom(GroceryModel grocery) {
+    name.value = grocery.name.value;
+    category.value = grocery.category.value;
+    isBought.value = grocery.isBought.value;
+    quantity.value = grocery.quantity.value;
+  }
 }

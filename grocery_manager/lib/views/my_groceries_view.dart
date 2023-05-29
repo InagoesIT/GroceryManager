@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/my_products_controller.dart';
 import 'package:grocery_manager/models/grocery_model.dart';
+import 'package:grocery_manager/models/pantry_item_model.dart';
 import 'package:grocery_manager/views/base_views/my_products_view.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/product_categories_controller.dart';
@@ -21,6 +22,7 @@ class MyGroceriesView extends MyProductsView<GroceryModel> {
   @override
   final NavigationController? navigationController =
       Get.find<NavigationController>();
+  static const int TRANSFER_TO_PANTRY_INDEX = 1;
 
   MyGroceriesView({super.key});
 
@@ -36,13 +38,15 @@ class MyGroceriesView extends MyProductsView<GroceryModel> {
 
   @override
   List<PopupMenuEntry<int>> getMenuItems(context) {
-    return [getFilterMenuOption()];
+    return [getFilterMenuOption(), getTransferToPantryOption()];
   }
 
   @override
   void handleMenu(selectedIndex) {
     if (selectedIndex == MyProductsView.FILTER_OPTION_INDEX) {
       redirectToFilterPage();
+    } else if (selectedIndex == MyGroceriesView.TRANSFER_TO_PANTRY_INDEX) {
+      myProductsController!.transferToPantry();
     }
   }
 
@@ -68,5 +72,15 @@ class MyGroceriesView extends MyProductsView<GroceryModel> {
     return product.isBought.value
         ? TextDecoration.lineThrough
         : TextDecoration.none;
+  }
+
+  PopupMenuEntry<int> getTransferToPantryOption() {
+    return const PopupMenuItem<int>(
+        value: TRANSFER_TO_PANTRY_INDEX,
+        child: ListTile(
+          leading: Icon(Icons.shopping_cart_checkout_rounded),
+          title: Text("Transfer items to pantry"),
+          subtitle: Text("Transfer the bought items to pantry"),
+        ));
   }
 }

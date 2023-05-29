@@ -13,8 +13,19 @@ abstract class MyProductView<T extends ProductModel> extends StatelessWidget {
 
   MyProductView({super.key, this.index});
 
+  List<Widget> getProductElements(BuildContext context);
+
+  T getUpdatedProduct();
+
+  void loadProduct() {
+    if (index != null) {
+      product!.copyFrom(myProductsController!.getProduct(index!)!);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    loadProduct();
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
@@ -34,8 +45,6 @@ abstract class MyProductView<T extends ProductModel> extends StatelessWidget {
       )),
     );
   }
-
-  List<Widget> getProductElements(BuildContext context);
 
   Align getProductName(TextEditingController nameEditingController) {
     return Align(
@@ -236,6 +245,7 @@ abstract class MyProductView<T extends ProductModel> extends StatelessWidget {
   }
 
   Align getProductQuantity(TextEditingController quantityEditingController) {
+    int? processedValue;
     return Align(
         alignment: Alignment.topLeft,
         child: SizedBox(
@@ -245,9 +255,20 @@ abstract class MyProductView<T extends ProductModel> extends StatelessWidget {
               decoration: getInputDecoration("Quantity"),
               keyboardType: TextInputType.number,
               maxLines: 1,
-              onChanged: (value) => product!.quantity.value = int.parse(value),
+              onChanged: (value) => {
+                processedValue = getValue(value),
+                if (processedValue != null)
+                  product!.quantity.value = int.parse(value)
+              },
             )));
   }
 
-  T getUpdatedProduct();
+  int? getValue(value) {
+    try {
+      int finalValue = int.parse(value);
+      return finalValue;
+    } catch (exception) {
+      return null;
+    }
+  }
 }

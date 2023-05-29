@@ -28,4 +28,10 @@ class ProductModel extends GetxController {
       'quantity': quantity.value,
     };
   }
+
+  void copyFrom(covariant ProductModel grocery) {
+    name.value = grocery.name.value;
+    category.value = grocery.category.value;
+    quantity.value = grocery.quantity.value;
+  }
 }

@@ -24,9 +24,7 @@ class MyGroceryView extends MyProductView<GroceryModel> {
     if (product.category.value != "") {
       updatedGrocery.category.value = product.category.value;
     }
-    if (product.quantity.value != 1) {
-      updatedGrocery.quantity.value = product.quantity.value;
-    }
+    updatedGrocery.quantity.value = product.quantity.value;
 
     return updatedGrocery;
   }
