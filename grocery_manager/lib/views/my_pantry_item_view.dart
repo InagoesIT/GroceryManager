@@ -24,10 +24,11 @@ class MyPantryItemView extends MyProductView<PantryItemModel> {
     if (product.category.value != "") {
       updatedGrocery.category.value = product.category.value;
     }
-    updatedGrocery.quantity.value = product.quantity.value;
     if (product.expiryDate.value.compareTo(product.defaultDate) != 0) {
       updatedGrocery.expiryDate.value = product.expiryDate.value;
     }
+    updatedGrocery.quantity.value = product.quantity.value;
+    updatedGrocery.daysBeforeNotify.value = product.daysBeforeNotify.value;
 
     return updatedGrocery;
   }
@@ -114,18 +115,22 @@ class MyPantryItemView extends MyProductView<PantryItemModel> {
     }
     TextEditingController daysBeforeEditingController =
         TextEditingController(text: daysBeforeNotify);
+    int? processedValue;
 
     return Align(
         alignment: Alignment.topLeft,
         child: SizedBox(
             width: 200,
             child: TextField(
-              controller: daysBeforeEditingController,
-              decoration: getInputDecoration("Days before expiry notification"),
-              keyboardType: TextInputType.number,
-              maxLines: 1,
-              onChanged: (value) =>
-                  product.daysBeforeNotify.value = int.parse(value),
-            )));
+                controller: daysBeforeEditingController,
+                decoration:
+                    getInputDecoration("Days before expiry notification"),
+                keyboardType: TextInputType.number,
+                maxLines: 1,
+                onChanged: (value) => {
+                      processedValue = getValue(value),
+                      if (processedValue != null)
+                        product.daysBeforeNotify.value = int.parse(value)
+                    })));
   }
 }
