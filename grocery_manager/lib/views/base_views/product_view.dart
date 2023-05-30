@@ -189,7 +189,8 @@ abstract class ProductView<T extends ProductModel> extends StatelessWidget {
     return Get.bottomSheet(Container(
       color: Colors.white,
       padding: const EdgeInsets.all(16),
-      child: Column(
+      child: SingleChildScrollView(
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -201,7 +202,7 @@ abstract class ProductView<T extends ProductModel> extends StatelessWidget {
           getSpaceBetweenElements(isVertical: true),
           getProductCategoryCancelButton(),
         ],
-      ),
+      )),
     ));
   }
 

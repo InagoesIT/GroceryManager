@@ -4,7 +4,7 @@ import 'package:grocery_manager/models/product_model.dart';
 class PantryItemModel extends ProductModel {
   var isBought = false.obs;
   Rx<DateTime> expiryDate = DateTime(2023, 5, 16).obs;
-  final DateTime defaultDate = DateTime(2023, 5, 16);
+  static final DateTime defaultDate = DateTime(2023, 5, 16);
   var daysBeforeNotify = 1.obs;
 
   PantryItemModel({

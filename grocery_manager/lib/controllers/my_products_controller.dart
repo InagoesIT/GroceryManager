@@ -63,6 +63,17 @@ class MyProductsController<T extends ProductModel> extends GetxController {
     return _products.length;
   }
 
+  int getListSizeFromAll() {
+    return _allProducts.length;
+  }
+
+  T? getProductFromAll(int index) {
+    if (index > -1 && index < _allProducts.length) {
+      return _allProducts[index];
+    }
+    return null;
+  }
+
   void setIndexWithProduct(int index, T product) {
     if (index < 0 && index >= _products.length) {
       return;
