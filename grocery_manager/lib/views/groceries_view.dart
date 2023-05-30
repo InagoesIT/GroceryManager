@@ -58,10 +58,6 @@ class GroceriesView extends ProductsView<GroceryModel> {
           value: product!.isBought.value,
           onChanged: (isEnabled) {
             product.isBought.value = !product.isBought.value;
-            if (product.isBought.value) {
-              productsController.removeProductWithIndex(index);
-              productsController.addProduct(product);
-            }
           },
         ));
   }
