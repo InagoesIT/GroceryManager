@@ -85,7 +85,7 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
 
   Widget getMyProducts() {
     int? listSize = myProductsController!.getListSize();
-    if (listSize == null || listSize == 0) {
+    if (listSize == 0) {
       return getNoProductsText();
     }
     return ListView.builder(
@@ -116,7 +116,7 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
     return Get.defaultDialog(
         title: "Delete item",
         middleText: myProductsController.getProduct(index)!.name.value,
-        onCancel: () => Get.back(),
+        onCancel: () => {},
         buttonColor: Colors.redAccent,
         confirmTextColor: Colors.white,
         cancelTextColor: Colors.black,

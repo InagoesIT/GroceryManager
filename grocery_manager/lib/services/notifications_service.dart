@@ -89,8 +89,6 @@ class NotificationsService extends GetxService {
         notificationTime.minute,
         0);
 
-    print(finalExpiryDateNotification);
-
     return finalExpiryDateNotification;
   }
 
