@@ -119,26 +119,30 @@ class PantryItemView extends ProductView<PantryItemModel> {
                 ? "No expiry date provided"
                 : "${date.value.day}/${date.value.month}/${date.value.year}"),
             getSpaceBetweenElements(isVertical: false),
-            TextButton(
-                onPressed: () async {
-                  final DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2100));
-                  if (pickedDate == null) {
-                    return;
-                  }
-                  date.value = pickedDate;
-                  product.expiryDate.value = DateTime(
-                    date.value.year,
-                    date.value.month,
-                    date.value.day,
-                  );
-                },
-                child: const Text("Select expiry date"))
+            getExpiryDateSelector(context, date)
           ],
         )));
+  }
+
+  TextButton getExpiryDateSelector(BuildContext context, Rx<DateTime> date) {
+    return TextButton(
+        onPressed: () async {
+          final DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime(2100));
+          if (pickedDate == null) {
+            return;
+          }
+          date.value = pickedDate;
+          product.expiryDate.value = DateTime(
+            date.value.year,
+            date.value.month,
+            date.value.day,
+          );
+        },
+        child: const Text("Select expiry date"));
   }
 
   Obx getPantryNotificationHour(BuildContext context) {
@@ -159,26 +163,31 @@ class PantryItemView extends ProductView<PantryItemModel> {
                         ? "${date.value.hour}:${date.value.minute}"
                         : "No notification time provided")),
             getSpaceBetweenElements(isVertical: false, multiplier: 1),
-            TextButton(
-                onPressed: () async {
-                  final TimeOfDay? time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.now(),
-                  );
-
-                  if (time == null) {
-                    return;
-                  }
-                  date.value = TimeOfDay(
-                    hour: time.hour,
-                    minute: time.minute,
-                  );
-                  product.expiryNotificationHour.value =
-                      TimeOfDay(hour: time.hour, minute: time.minute);
-                },
-                child: const Text("Select notification time"))
+            getNotificationTimeSelector(context, date)
           ],
         )));
+  }
+
+  TextButton getNotificationTimeSelector(
+      BuildContext context, Rx<TimeOfDay> date) {
+    return TextButton(
+        onPressed: () async {
+          final TimeOfDay? time = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+          );
+
+          if (time == null) {
+            return;
+          }
+          date.value = TimeOfDay(
+            hour: time.hour,
+            minute: time.minute,
+          );
+          product.expiryNotificationHour.value =
+              TimeOfDay(hour: time.hour, minute: time.minute);
+        },
+        child: const Text("Select notification time"));
   }
 
   Align getDaysBeforeNotification() {
