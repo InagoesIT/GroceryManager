@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/product_categories_controller.dart';
 
-import '../../controllers/my_products_controller.dart';
+import '../../controllers/products_controller.dart';
 import '../../models/product_model.dart';
 
 abstract class ProductView<T extends ProductModel> extends StatelessWidget {
   final T? product = null;
-  final MyProductsController<T>? myProductsController = null;
+  final ProductsController<T>? productsController = null;
   final int? index;
   final ProductsCategoryController productsCategoryController = Get.find();
 
@@ -19,7 +19,7 @@ abstract class ProductView<T extends ProductModel> extends StatelessWidget {
 
   void loadProduct() {
     if (index != null) {
-      product!.copyFrom(myProductsController!.getProduct(index!)!);
+      product!.copyFrom(productsController!.getProduct(index!)!);
     }
   }
 
@@ -113,7 +113,7 @@ abstract class ProductView<T extends ProductModel> extends StatelessWidget {
   int getCurrentCategoryIndex() {
     if (index != null) {
       String currentCategory =
-          myProductsController!.getProduct(index!)!.category.value;
+          productsController!.getProduct(index!)!.category.value;
       return productsCategoryController.getIndexOf(currentCategory);
     }
     if (product!.category.value.isNotEmpty) {
@@ -161,10 +161,10 @@ abstract class ProductView<T extends ProductModel> extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {
         if (index == null) {
-          myProductsController!.addProduct(product!);
+          productsController!.addProduct(product!);
         } else {
           T updatedProduct = getUpdatedProduct();
-          myProductsController!.setIndexWithProduct(index!, updatedProduct);
+          productsController!.setIndexWithProduct(index!, updatedProduct);
         }
 
         Get.back();

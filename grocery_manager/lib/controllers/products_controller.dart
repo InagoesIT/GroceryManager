@@ -5,15 +5,14 @@ import '../models/pantry_item_model.dart';
 import '../models/product_model.dart';
 import '../views/filters_view.dart';
 
-class MyProductsController<T extends ProductModel> extends GetxController {
+class ProductsController<T extends ProductModel> extends GetxController {
   final RxList<T> _allProducts = List<T>.empty(growable: true).obs;
   final RxList<T> _products = List<T>.empty(growable: true).obs;
   String key;
   RxString currentFilter = FiltersView.NO_CATEGORY.obs;
   Function createProductFunction;
 
-  MyProductsController(
-      {required this.createProductFunction, required this.key});
+  ProductsController({required this.createProductFunction, required this.key});
 
   @override
   void onInit() {
@@ -91,11 +90,11 @@ class MyProductsController<T extends ProductModel> extends GetxController {
   }
 
   void transferToPantry() {
-    final MyProductsController<GroceryModel> myGroceryController =
-        Get.find<MyProductsController<GroceryModel>>();
-    final MyProductsController<PantryItemModel> myPantryController =
-        Get.find<MyProductsController<PantryItemModel>>();
-    var groceries = myGroceryController._allProducts;
+    final ProductsController<GroceryModel> groceryController =
+        Get.find<ProductsController<GroceryModel>>();
+    final ProductsController<PantryItemModel> pantryController =
+        Get.find<ProductsController<PantryItemModel>>();
+    var groceries = groceryController._allProducts;
 
     for (int index = 0; index < groceries.length; index++) {
       if (!groceries[index].isBought.value) {
@@ -103,7 +102,7 @@ class MyProductsController<T extends ProductModel> extends GetxController {
       }
       ProductModel product = groceries.removeAt(index);
       PantryItemModel pantryItem = PantryItemModel.fromProduct(product);
-      myPantryController.addProduct(pantryItem);
+      pantryController.addProduct(pantryItem);
     }
   }
 }

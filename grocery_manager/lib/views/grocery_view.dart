@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/my_products_controller.dart';
+import 'package:grocery_manager/controllers/products_controller.dart';
 import 'package:grocery_manager/views/base_views/product_view.dart';
 
 import '../models/grocery_model.dart';
@@ -9,15 +9,14 @@ class GroceryView extends ProductView<GroceryModel> {
   @override
   final GroceryModel product = GroceryModel();
   @override
-  final MyProductsController<GroceryModel> myProductsController =
-      Get.find<MyProductsController<GroceryModel>>();
+  final ProductsController<GroceryModel> productsController =
+      Get.find<ProductsController<GroceryModel>>();
 
   GroceryView({super.key, super.index});
 
   @override
   GroceryModel getUpdatedProduct() {
-    GroceryModel updatedGrocery =
-        myProductsController.getProduct(super.index!)!;
+    GroceryModel updatedGrocery = productsController.getProduct(super.index!)!;
     if (product.name.value != "") {
       updatedGrocery.name.value = product.name.value;
     }
@@ -33,11 +32,11 @@ class GroceryView extends ProductView<GroceryModel> {
   List<Widget> getProductElements(BuildContext context) {
     String name = "";
     if (index != null) {
-      name = myProductsController.getProduct(super.index!)!.name.value;
+      name = productsController.getProduct(super.index!)!.name.value;
     }
     String quantity = "1";
     if (index != null) {
-      quantity = myProductsController
+      quantity = productsController
           .getProduct(super.index!)!
           .quantity
           .value

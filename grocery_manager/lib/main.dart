@@ -7,7 +7,7 @@ import 'package:grocery_manager/models/pantry_item_model.dart';
 import 'package:grocery_manager/services/notifications_service.dart';
 import 'package:grocery_manager/views/pantry_view.dart';
 
-import 'controllers/my_products_controller.dart';
+import 'controllers/products_controller.dart';
 import 'models/grocery_model.dart';
 
 void main() async {
@@ -34,9 +34,9 @@ class GroceryManager extends StatelessWidget {
   }
 
   static void createControllers() {
-    Get.put(MyProductsController<GroceryModel>(
+    Get.put(ProductsController<GroceryModel>(
         createProductFunction: () => GroceryModel(), key: "groceries"));
-    Get.put(MyProductsController<PantryItemModel>(
+    Get.put(ProductsController<PantryItemModel>(
         createProductFunction: () => PantryItemModel(), key: "pantry"));
     Get.put(NavigationController());
     Get.put(ProductsCategoryController());

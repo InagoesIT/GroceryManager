@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import '../controllers/my_products_controller.dart';
+import '../controllers/products_controller.dart';
 import '../models/pantry_item_model.dart';
 
 class NotificationsService extends GetxService {
@@ -56,12 +56,12 @@ class NotificationsService extends GetxService {
   }
 
   void scheduleAllNotifications() {
-    final MyProductsController<PantryItemModel> myPantryController =
-        Get.find<MyProductsController<PantryItemModel>>();
-    int listSize = myPantryController.getListSizeFromAll();
+    final ProductsController<PantryItemModel> pantryController =
+        Get.find<ProductsController<PantryItemModel>>();
+    int listSize = pantryController.getListSizeFromAll();
 
     for (int index = 0; index < listSize; index++) {
-      PantryItemModel pantryItem = myPantryController.getProductFromAll(index)!;
+      PantryItemModel pantryItem = pantryController.getProductFromAll(index)!;
       if (pantryItem.expiryDate.value.compareTo(PantryItemModel.defaultDate) ==
           0) {
         continue;

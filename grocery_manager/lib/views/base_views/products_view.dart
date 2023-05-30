@@ -4,12 +4,12 @@ import 'package:grocery_manager/models/pantry_item_model.dart';
 import 'package:grocery_manager/models/product_model.dart';
 import 'package:grocery_manager/views/filters_view.dart';
 
-import '../../controllers/my_products_controller.dart';
+import '../../controllers/products_controller.dart';
 import '../../controllers/navigation_controller.dart';
 import '../../models/grocery_model.dart';
 
 abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
-  final MyProductsController<T>? myProductsController = null;
+  final ProductsController<T>? productsController = null;
   final String? pageTitle = null;
   final bool? isGrocery = null;
   final NavigationController? navigationController = null;
@@ -17,16 +17,16 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
 
   const ProductsView({super.key});
 
-  void getToNewMyProduct();
+  void getToNewProduct();
 
-  void getToMyProduct(int index);
+  void getToProduct(int index);
 
   List<PopupMenuEntry<int>> getMenuItems(context);
 
   void handleMenu(selectedIndex);
 
   Obx? getProductCheckbox(
-      MyProductsController<T> myProductsController, int index);
+      ProductsController<T> productsController, int index);
 
   @override
   Widget build(BuildContext context) {
@@ -40,11 +40,11 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
                 actions: [getMenu()]),
             floatingActionButton: FloatingActionButton(
               child: const Icon(Icons.add),
-              onPressed: () => getToNewMyProduct(),
+              onPressed: () => getToNewProduct(),
             ),
             body: Padding(
                 padding: const EdgeInsets.all(5),
-                child: Obx(() => getMyProducts()))));
+                child: Obx(() => getProducts()))));
   }
 
   PopupMenuItem<int> getFilterMenuOption() {
@@ -73,25 +73,25 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
       destinations: const <Widget>[
         NavigationDestination(
           icon: Icon(Icons.kitchen_rounded),
-          label: 'My Pantry',
+          label: 'Pantry',
         ),
         NavigationDestination(
           icon: Icon(Icons.shopping_cart_outlined),
-          label: 'My Groceries',
+          label: 'Groceries',
         )
       ],
     );
   }
 
-  Widget getMyProducts() {
-    int? listSize = myProductsController!.getListSize();
+  Widget getProducts() {
+    int? listSize = productsController!.getListSize();
     if (listSize == 0) {
       return getNoProductsText();
     }
     return ListView.builder(
         itemCount: listSize,
         itemBuilder: (context, index) =>
-            getProduct(myProductsController!, index));
+            getProduct(productsController!, index));
   }
 
   Widget getNoProductsText() {
@@ -103,38 +103,38 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
   }
 
   GestureDetector getProduct(
-      MyProductsController<T> myProductsController, int index) {
+      ProductsController<T> productsController, int index) {
     return GestureDetector(
-      onTap: () => getToMyProduct(index),
-      onDoubleTap: () => getProductDeleteDialog(myProductsController, index),
-      child: Obx(() => getProductItem(myProductsController, index)),
+      onTap: () => getToProduct(index),
+      onDoubleTap: () => getProductDeleteDialog(productsController, index),
+      child: Obx(() => getProductItem(productsController, index)),
     );
   }
 
   Future<dynamic> getProductDeleteDialog(
-      MyProductsController myProductsController, int index) {
+      ProductsController productsController, int index) {
     return Get.defaultDialog(
         title: "Delete item",
-        middleText: myProductsController.getProduct(index)!.name.value,
+        middleText: productsController.getProduct(index)!.name.value,
         onCancel: () => {},
         buttonColor: Colors.redAccent,
         confirmTextColor: Colors.white,
         cancelTextColor: Colors.black,
         onConfirm: () {
-          myProductsController.removeProductWithIndex(index);
+          productsController.removeProductWithIndex(index);
           Get.back();
         });
   }
 
-  Obx getProductItem(MyProductsController<T> myProductsController, int index) {
-    T product = myProductsController.getProduct(index)!;
+  Obx getProductItem(ProductsController<T> productsController, int index) {
+    T product = productsController.getProduct(index)!;
 
     return Obx(() => Card(
             child: ListTile(
           title: getProductName(product),
           subtitle: getProductCategory(product),
           leading: isGrocery!
-              ? getProductCheckbox(myProductsController, index)
+              ? getProductCheckbox(productsController, index)
               : null,
           trailing: getProductQuantity(product),
         )));

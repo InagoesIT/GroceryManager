@@ -3,15 +3,15 @@ import 'package:get/get.dart';
 import 'package:grocery_manager/models/pantry_item_model.dart';
 import 'package:grocery_manager/views/base_views/product_view.dart';
 
-import '../controllers/my_products_controller.dart';
+import '../controllers/products_controller.dart';
 import '../services/notifications_service.dart';
 
 class PantryItemView extends ProductView<PantryItemModel> {
   @override
   final PantryItemModel product = PantryItemModel();
   @override
-  final MyProductsController<PantryItemModel> myProductsController =
-      Get.find<MyProductsController<PantryItemModel>>();
+  final ProductsController<PantryItemModel> productsController =
+      Get.find<ProductsController<PantryItemModel>>();
   final NotificationsService notificationsService =
       Get.find<NotificationsService>();
 
@@ -20,7 +20,7 @@ class PantryItemView extends ProductView<PantryItemModel> {
   @override
   PantryItemModel getUpdatedProduct() {
     PantryItemModel updatedGrocery =
-        myProductsController.getProduct(super.index!)!;
+        productsController.getProduct(super.index!)!;
     if (product.name.value != "") {
       updatedGrocery.name.value = product.name.value;
     }
@@ -67,7 +67,7 @@ class PantryItemView extends ProductView<PantryItemModel> {
   List<Widget> getProductElements(BuildContext context) {
     String name = "";
     if (index != null) {
-      name = myProductsController.getProduct(super.index!)!.name.value;
+      name = productsController.getProduct(super.index!)!.name.value;
     }
     TextEditingController nameEditingController =
         TextEditingController(text: name);
@@ -92,7 +92,7 @@ class PantryItemView extends ProductView<PantryItemModel> {
   Widget getQuantityHandler() {
     String quantity = "1";
     if (index != null) {
-      quantity = myProductsController
+      quantity = productsController
           .getProduct(super.index!)!
           .quantity
           .value
@@ -109,7 +109,7 @@ class PantryItemView extends ProductView<PantryItemModel> {
     if (index == null) {
       date.value = product.expiryDate.value;
     } else {
-      date.value = myProductsController.getProduct(index!)!.expiryDate.value;
+      date.value = productsController.getProduct(index!)!.expiryDate.value;
     }
 
     return Obx(() => Center(
@@ -151,7 +151,7 @@ class PantryItemView extends ProductView<PantryItemModel> {
       date.value = product.expiryNotificationHour.value;
     } else {
       date.value =
-          myProductsController.getProduct(index!)!.expiryNotificationHour.value;
+          productsController.getProduct(index!)!.expiryNotificationHour.value;
     }
 
     return Obx(() => Center(
@@ -193,7 +193,7 @@ class PantryItemView extends ProductView<PantryItemModel> {
   Align getDaysBeforeNotification() {
     String daysBeforeNotify = "1";
     if (index != null) {
-      daysBeforeNotify = myProductsController
+      daysBeforeNotify = productsController
           .getProduct(super.index!)!
           .daysBeforeNotify
           .value

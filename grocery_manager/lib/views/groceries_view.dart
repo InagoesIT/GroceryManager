@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/my_products_controller.dart';
+import 'package:grocery_manager/controllers/products_controller.dart';
 import 'package:grocery_manager/models/grocery_model.dart';
 import 'package:grocery_manager/views/base_views/products_view.dart';
 import '../controllers/navigation_controller.dart';
@@ -9,10 +9,10 @@ import 'grocery_view.dart';
 
 class GroceriesView extends ProductsView<GroceryModel> {
   @override
-  final MyProductsController<GroceryModel>? myProductsController =
-      Get.find<MyProductsController<GroceryModel>>();
+  final ProductsController<GroceryModel>? productsController =
+      Get.find<ProductsController<GroceryModel>>();
   @override
-  final String? pageTitle = "My Groceries";
+  final String? pageTitle = "Groceries";
   @override
   final bool? isGrocery = true;
   @override
@@ -26,12 +26,12 @@ class GroceriesView extends ProductsView<GroceryModel> {
   GroceriesView({super.key});
 
   @override
-  void getToMyProduct(int index) {
+  void getToProduct(int index) {
     Get.to(GroceryView(index: index));
   }
 
   @override
-  void getToNewMyProduct() {
+  void getToNewProduct() {
     Get.to(GroceryView());
   }
 
@@ -45,22 +45,22 @@ class GroceriesView extends ProductsView<GroceryModel> {
     if (selectedIndex == ProductsView.FILTER_OPTION_INDEX) {
       redirectToFilterPage();
     } else if (selectedIndex == GroceriesView.TRANSFER_TO_PANTRY_INDEX) {
-      myProductsController!.transferToPantry();
+      productsController!.transferToPantry();
     }
   }
 
   @override
   Obx? getProductCheckbox(
-      MyProductsController<GroceryModel> myProductsController, int index) {
-    var product = myProductsController.getProduct(index);
+      ProductsController<GroceryModel> productsController, int index) {
+    var product = productsController.getProduct(index);
 
     return Obx(() => Checkbox(
           value: product!.isBought.value,
           onChanged: (isEnabled) {
             product.isBought.value = !product.isBought.value;
             if (product.isBought.value) {
-              myProductsController.removeProductWithIndex(index);
-              myProductsController.addProduct(product);
+              productsController.removeProductWithIndex(index);
+              productsController.addProduct(product);
             }
           },
         ));

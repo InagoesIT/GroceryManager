@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/my_products_controller.dart';
+import 'package:grocery_manager/controllers/products_controller.dart';
 import 'package:grocery_manager/models/pantry_item_model.dart';
 import 'package:grocery_manager/services/notifications_service.dart';
 import 'package:grocery_manager/views/base_views/products_view.dart';
@@ -13,10 +13,10 @@ class PantryView extends ProductsView<PantryItemModel> {
   final NavigationController? navigationController =
       Get.find<NavigationController>();
   @override
-  final MyProductsController<PantryItemModel>? myProductsController =
-      Get.find<MyProductsController<PantryItemModel>>();
+  final ProductsController<PantryItemModel>? productsController =
+      Get.find<ProductsController<PantryItemModel>>();
   @override
-  final String? pageTitle = "My Pantry";
+  final String? pageTitle = "Pantry";
   @override
   final bool? isGrocery = false;
   @override
@@ -29,17 +29,17 @@ class PantryView extends ProductsView<PantryItemModel> {
 
   @override
   Obx? getProductCheckbox(
-      MyProductsController<PantryItemModel> myProductsController, int index) {
+      ProductsController<PantryItemModel> productsController, int index) {
     return null;
   }
 
   @override
-  void getToMyProduct(int index) {
+  void getToProduct(int index) {
     Get.to(PantryItemView(index: index));
   }
 
   @override
-  void getToNewMyProduct() {
+  void getToNewProduct() {
     Get.to(PantryItemView());
   }
 

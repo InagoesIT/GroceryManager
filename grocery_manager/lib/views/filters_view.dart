@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/product_categories_controller.dart';
 import 'package:grocery_manager/models/product_model.dart';
 
-import '../controllers/my_products_controller.dart';
+import '../controllers/products_controller.dart';
 
 class FiltersView<T extends ProductModel> extends StatelessWidget {
-  final MyProductsController<T> myProductsController =
-      Get.find<MyProductsController<T>>();
+  final ProductsController<T> productsController =
+      Get.find<ProductsController<T>>();
   final ProductsCategoryController productsCategoryController =
       Get.find<ProductsCategoryController>();
   static const String NO_CATEGORY = "";
@@ -17,7 +17,7 @@ class FiltersView<T extends ProductModel> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    currentFilter = myProductsController.currentFilter;
+    currentFilter = productsController.currentFilter;
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
@@ -85,7 +85,7 @@ class FiltersView<T extends ProductModel> extends StatelessWidget {
 
   void deleteFilter() {
     currentFilter.value = FiltersView.NO_CATEGORY;
-    myProductsController.currentFilter.value = currentFilter.value;
+    productsController.currentFilter.value = currentFilter.value;
     redirect();
   }
 
@@ -95,12 +95,12 @@ class FiltersView<T extends ProductModel> extends StatelessWidget {
   }
 
   void applyFilter() {
-    myProductsController.currentFilter.value = currentFilter.value;
+    productsController.currentFilter.value = currentFilter.value;
     redirect();
   }
 
   void redirect() {
-    myProductsController.filterProducts();
+    productsController.filterProducts();
     Get.back();
   }
 }
