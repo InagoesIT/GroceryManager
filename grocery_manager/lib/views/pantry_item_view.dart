@@ -30,6 +30,11 @@ class PantryItemView extends ProductView<PantryItemModel> {
     if (product.expiryDate.value.compareTo(PantryItemModel.defaultDate) != 0) {
       updatedGrocery.expiryDate.value = product.expiryDate.value;
     }
+    if (product.isNotificationTimeDifferentFromDefault(
+        product.expiryNotificationHour.value)) {
+      updatedGrocery.expiryNotificationHour.value =
+          product.expiryNotificationHour.value;
+    }
     updatedGrocery.quantity.value = product.quantity.value;
     updatedGrocery.daysBeforeNotify.value = product.daysBeforeNotify.value;
     handleNotificationFor(updatedGrocery);
@@ -77,7 +82,9 @@ class PantryItemView extends ProductView<PantryItemModel> {
         getSpaceBetweenElements(isVertical: true),
         getPantryExpiryDate(context),
         getSpaceBetweenElements(isVertical: true),
-        getDaysBeforeNotification()
+        getDaysBeforeNotification(),
+        getSpaceBetweenElements(isVertical: true),
+        getPantryNotificationHour(context)
       ])
     ];
   }
@@ -110,7 +117,7 @@ class PantryItemView extends ProductView<PantryItemModel> {
           children: [
             Text(date.value.compareTo(PantryItemModel.defaultDate) == 0
                 ? "No expiry date provided"
-                : "${date.value.day}/${date.value.month}/${date.value.year} ${date.value.hour}:${date.value.minute}:00"),
+                : "${date.value.day}/${date.value.month}/${date.value.year}"),
             getSpaceBetweenElements(isVertical: false),
             TextButton(
                 onPressed: () async {
@@ -123,32 +130,53 @@ class PantryItemView extends ProductView<PantryItemModel> {
                     return;
                   }
                   date.value = pickedDate;
+                  product.expiryDate.value = DateTime(
+                    date.value.year,
+                    date.value.month,
+                    date.value.day,
+                  );
+                },
+                child: const Text("Select expiry date"))
+          ],
+        )));
+  }
+
+  Obx getPantryNotificationHour(BuildContext context) {
+    Rx<TimeOfDay> date = Rx(TimeOfDay.now());
+    if (index == null) {
+      date.value = product.expiryNotificationHour.value;
+    } else {
+      date.value =
+          myProductsController.getProduct(index!)!.expiryNotificationHour.value;
+    }
+
+    return Obx(() => Center(
+            child: Row(
+          children: [
+            Expanded(
+                child: Text(
+                    product.isNotificationTimeDifferentFromDefault(date.value)
+                        ? "${date.value.hour}:${date.value.minute}"
+                        : "No notification time provided")),
+            getSpaceBetweenElements(isVertical: false, multiplier: 1),
+            TextButton(
+                onPressed: () async {
                   final TimeOfDay? time = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),
                   );
 
                   if (time == null) {
-                    product.expiryDate.value = DateTime(
-                      date.value.year,
-                      date.value.month,
-                      date.value.day,
-                    );
                     return;
                   }
-                  date.value = DateTime(
-                    time.hour,
-                    time.minute,
+                  date.value = TimeOfDay(
+                    hour: time.hour,
+                    minute: time.minute,
                   );
-                  product.expiryDate.value = DateTime(
-                    date.value.year,
-                    date.value.month,
-                    date.value.day,
-                    date.value.hour,
-                    date.value.minute,
-                  );
+                  product.expiryNotificationHour.value =
+                      TimeOfDay(hour: time.hour, minute: time.minute);
                 },
-                child: const Text("Select expiry date"))
+                child: const Text("Select notification time"))
           ],
         )));
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/controllers/my_products_controller.dart';
 import 'package:grocery_manager/models/grocery_model.dart';
-import 'package:grocery_manager/models/pantry_item_model.dart';
 import 'package:grocery_manager/views/base_views/products_view.dart';
 import '../controllers/navigation_controller.dart';
 import '../controllers/product_categories_controller.dart';

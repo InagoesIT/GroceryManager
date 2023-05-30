@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_manager/models/product_model.dart';
 
@@ -5,7 +6,10 @@ class PantryItemModel extends ProductModel {
   var isBought = false.obs;
   Rx<DateTime> expiryDate = DateTime(2023, 5, 16).obs;
   static final DateTime defaultDate = DateTime(2023, 5, 16);
+  static const TimeOfDay defaultTime = TimeOfDay(hour: 0, minute: 0);
   var daysBeforeNotify = 1.obs;
+  Rx<TimeOfDay> expiryNotificationHour =
+      const TimeOfDay(hour: 0, minute: 0).obs;
 
   PantryItemModel({
     String name = "",
@@ -13,9 +17,13 @@ class PantryItemModel extends ProductModel {
     int quantity = 1,
     DateTime? expiryDate,
     int daysBeforeNotify = 1,
+    TimeOfDay? expiryNotificationHour,
   }) : super(name: name, category: category, quantity: quantity) {
     if (expiryDate != null) {
       this.expiryDate.value = expiryDate;
+    }
+    if (expiryNotificationHour != null) {
+      this.expiryNotificationHour.value = expiryNotificationHour;
     }
     this.daysBeforeNotify.value = daysBeforeNotify;
   }
@@ -30,7 +38,17 @@ class PantryItemModel extends ProductModel {
   void fromJson(Map<String, dynamic> json) {
     super.fromJson(json);
     expiryDate.value = DateTime.parse(json['expiryDate']);
+    expiryNotificationHour.value =
+        parseTimeOfDay(json['expiryNotificationHour']);
     daysBeforeNotify.value = json['daysBeforeNotify'];
+  }
+
+  bool isNotificationTimeDifferentFromDefault(TimeOfDay anotherTime) {
+    if (defaultTime.hour == anotherTime.hour &&
+        defaultTime.minute == anotherTime.minute) {
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -41,6 +59,7 @@ class PantryItemModel extends ProductModel {
       'quantity': quantity.value,
       'expiryDate': expiryDate.value.toIso8601String(),
       'daysBeforeNotify': daysBeforeNotify.value,
+      'expiryNotificationHour': formatTimeOfDay(expiryNotificationHour.value)
     };
   }
 
@@ -51,5 +70,21 @@ class PantryItemModel extends ProductModel {
     quantity.value = grocery.quantity.value;
     expiryDate.value = grocery.expiryDate.value;
     daysBeforeNotify.value = grocery.daysBeforeNotify.value;
+    expiryNotificationHour.value = grocery.expiryNotificationHour.value;
+  }
+
+  TimeOfDay parseTimeOfDay(String timeString) {
+    final parts = timeString.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+
+    return TimeOfDay(hour: hour, minute: minute);
+  }
+
+  String formatTimeOfDay(TimeOfDay timeOfDay) {
+    final hour = timeOfDay.hour.toString();
+    final minute = timeOfDay.minute.toString();
+
+    return '$hour:$minute';
   }
 }

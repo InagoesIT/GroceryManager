@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -75,12 +76,28 @@ class NotificationsService extends GetxService {
     _pantryItemNotificationIds.remove(pantryItem);
   }
 
-  void scheduleNotificationForItem(PantryItemModel pantryItem) {
+  DateTime getTimeOfExpiryNotification(PantryItemModel pantryItem) {
+    TimeOfDay notificationTime = pantryItem.expiryNotificationHour.value;
     int daysBeforeNotify = pantryItem.daysBeforeNotify.value;
-    DateTime notificationDate =
+    DateTime expiryDateNotification =
         pantryItem.expiryDate.value.subtract(Duration(days: daysBeforeNotify));
+    DateTime finalExpiryDateNotification = DateTime(
+        expiryDateNotification.year,
+        expiryDateNotification.month,
+        expiryDateNotification.day,
+        notificationTime.hour,
+        notificationTime.minute,
+        0);
+
+    print(finalExpiryDateNotification);
+
+    return finalExpiryDateNotification;
+  }
+
+  void scheduleNotificationForItem(PantryItemModel pantryItem) {
     DateTime expiryDate = pantryItem.expiryDate.value;
     String pantryItemName = pantryItem.name.value;
+    DateTime notificationDate = getTimeOfExpiryNotification(pantryItem);
 
     scheduleNotification(
         notificationId: maximumId,
