@@ -24,6 +24,7 @@ class PantryView extends ProductsView<PantryItemModel> {
       Get.find<ProductsCategoryController>();
   final NotificationsService notificationsService =
       Get.find<NotificationsService>();
+  static const Color TILE_EXPIRING_COLOR = Color.fromARGB(255, 221, 141, 168);
 
   PantryView({super.key});
 
@@ -53,5 +54,25 @@ class PantryView extends ProductsView<PantryItemModel> {
     if (selectedIndex == ProductsView.FILTER_OPTION_INDEX) {
       redirectToFilterPage();
     }
+  }
+
+  bool isExpiring(PantryItemModel product) {
+    if (product.expiryDate.value.compareTo(PantryItemModel.defaultDate) == 0) {
+      return false;
+    }
+    DateTime productExpirationNotification = product.expiryDate.value
+        .subtract(Duration(days: product.daysBeforeNotify.value));
+    if (productExpirationNotification.compareTo(DateTime.now()) <= 0) {
+      return true;
+    }
+    return false;
+  }
+
+  @override
+  Color getProductTileColor(PantryItemModel product) {
+    if (isExpiring(product)) {
+      return TILE_EXPIRING_COLOR;
+    }
+    return Colors.white;
   }
 }

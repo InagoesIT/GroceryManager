@@ -69,6 +69,11 @@ class GroceriesView extends ProductsView<GroceryModel> {
         : TextDecoration.none;
   }
 
+  @override
+  Color getProductTileColor(GroceryModel product) {
+    return Colors.white;
+  }
+
   PopupMenuEntry<int> getTransferToPantryOption() {
     return const PopupMenuItem<int>(
         value: TRANSFER_TO_PANTRY_INDEX,

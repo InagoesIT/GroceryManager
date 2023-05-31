@@ -38,7 +38,7 @@ abstract class ProductView<T extends ProductModel> extends StatelessWidget {
 
   Widget getBody(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(30, 30, 0, 0),
+      padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
       child: SingleChildScrollView(
           child: Column(
         children: getProductElements(context) + getProductButtons(),

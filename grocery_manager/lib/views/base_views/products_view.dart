@@ -25,8 +25,9 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
 
   void handleMenu(selectedIndex);
 
-  Obx? getProductCheckbox(
-      ProductsController<T> productsController, int index);
+  Obx? getProductCheckbox(ProductsController<T> productsController, int index);
+
+  Color getProductTileColor(T product);
 
   @override
   Widget build(BuildContext context) {
@@ -133,10 +134,10 @@ abstract class ProductsView<T extends ProductModel> extends StatelessWidget {
             child: ListTile(
           title: getProductName(product),
           subtitle: getProductCategory(product),
-          leading: isGrocery!
-              ? getProductCheckbox(productsController, index)
-              : null,
+          leading:
+              isGrocery! ? getProductCheckbox(productsController, index) : null,
           trailing: getProductQuantity(product),
+          tileColor: getProductTileColor(product),
         )));
   }
 

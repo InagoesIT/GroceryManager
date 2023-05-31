@@ -115,9 +115,11 @@ class PantryItemView extends ProductView<PantryItemModel> {
     return Obx(() => Center(
             child: Row(
           children: [
-            Text(date.value.compareTo(PantryItemModel.defaultDate) == 0
-                ? "No expiry date provided"
-                : "${date.value.day}/${date.value.month}/${date.value.year}"),
+            Expanded(
+                child: Text(date.value.compareTo(PantryItemModel.defaultDate) ==
+                        0
+                    ? "No expiry date provided"
+                    : "${date.value.day}/${date.value.month}/${date.value.year}")),
             getSpaceBetweenElements(isVertical: false),
             getExpiryDateSelector(context, date)
           ],
