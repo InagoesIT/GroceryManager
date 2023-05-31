@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/models/pantry_item_model.dart';
-import 'package:grocery_manager/models/product_model.dart';
-import 'package:grocery_manager/views/filters_view.dart';
+import 'package:products_manager/models/pantry_item_model.dart';
+import 'package:products_manager/models/product_model.dart';
+import 'package:products_manager/views/filters_view.dart';
 
 import '../../controllers/products_controller.dart';
 import '../../controllers/navigation_controller.dart';

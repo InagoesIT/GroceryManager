@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/product_categories_controller.dart';
+import 'package:products_manager/controllers/product_categories_controller.dart';
 
 import '../../controllers/products_controller.dart';
 import '../../models/product_model.dart';
@@ -95,7 +95,7 @@ abstract class ProductView<T extends ProductModel> extends StatelessWidget {
 
     return Obx(() => DropdownButton<int>(
           hint: const Text("Select a category"),
-          disabledHint: const Text("There are no categories"),
+          disabledHint: const Text("No categories"),
           value: currentCategoryIndex.value < 0
               ? null
               : currentCategoryIndex.value,

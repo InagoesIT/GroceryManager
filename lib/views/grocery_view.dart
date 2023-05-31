@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/controllers/products_controller.dart';
-import 'package:grocery_manager/views/base_views/product_view.dart';
+import 'package:products_manager/controllers/products_controller.dart';
+import 'package:products_manager/views/base_views/product_view.dart';
 
 import '../models/grocery_model.dart';
 

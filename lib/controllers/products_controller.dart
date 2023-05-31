@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:grocery_manager/models/grocery_model.dart';
+import 'package:products_manager/models/grocery_model.dart';
 import '../models/pantry_item_model.dart';
 import '../models/product_model.dart';
 import '../views/filters_view.dart';

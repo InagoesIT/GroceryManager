@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grocery_manager/models/product_model.dart';
+import 'package:products_manager/models/product_model.dart';
 
 class PantryItemModel extends ProductModel {
   var isBought = false.obs;

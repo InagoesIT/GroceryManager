@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:grocery_manager/views/groceries_view.dart';
-import 'package:grocery_manager/views/pantry_view.dart';
+import 'package:products_manager/views/groceries_view.dart';
+import 'package:products_manager/views/pantry_view.dart';
 
 class NavigationController extends GetxController {
   static const int PANTRY_PAGE_INDEX = 0;
