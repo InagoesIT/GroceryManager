@@ -78,6 +78,8 @@ class ProductsController<T extends ProductModel> extends GetxController {
       return;
     }
     _products[index] = product;
+    int indexInAll = _allProducts.indexOf(product);
+    _allProducts[indexInAll] = product;
   }
 
   void removeProductWithIndex(int index) {
