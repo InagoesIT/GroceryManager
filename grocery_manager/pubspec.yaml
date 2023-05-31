@@ -36,22 +36,6 @@ dependencies:
   get_storage: ^2.0.3  
   flutter_local_notifications: any
   timezone: any
-  flutter_launcher_icons: any
-
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/icons/app_icon.png"
-  web:
-    generate: true
-    image_path: "assets/icons/app_icon.png"
-  windows:
-    generate: true    
-    image_path: "assets/icons/app_icon.png"
-    icon_size: 48 # min:48, max:256, default: 48
-  macos:
-    generate: true    
-    image_path: "assets/icons/app_icon.png"
 
 
 dev_dependencies:
@@ -64,6 +48,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -107,3 +92,19 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  web:
+    generate: true
+    image_path: "assets/icons/app_icon.png"
+  windows:
+    generate: true    
+    image_path: "assets/icons/app_icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true    
+    image_path: "assets/icons/app_icon.png"

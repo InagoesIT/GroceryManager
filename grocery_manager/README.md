@@ -1,16 +1,3 @@
-# grocery_manager
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# ProductManager
+A mobile application that helps you to make grocery lists and keep track of your pantry items. 
+You can keep track of the quantities and expiration dates of your pantry items. You will get notifications when something is about to expire and it will make you product in the list be colored pink.
